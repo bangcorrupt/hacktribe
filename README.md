@@ -4,7 +4,7 @@ Electribe 2 hacks.
 ## Features
 - Sampling
 - All filters
-- Dual, Octave, Ring Mod, Chip oscillators
+- All oscillators + more
 - Hardware agnostic
 
 ## How To
