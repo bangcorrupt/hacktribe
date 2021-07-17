@@ -1,4 +1,4 @@
-# Modify Electribe 2 Sampler header for Electribe 2 Synth
+# Modify Electribe 2 Sampler file header for Electribe 2 Synth
 
 import os
 import sys
