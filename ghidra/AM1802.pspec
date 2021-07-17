@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<processor_spec>
+  <properties>
+    <property key="addressesDoNotAppearDirectlyInCode" value="true"/>
+    <property key="allowOffcutReferencesToFunctionStarts" value="true"/>
+    <property key="useNewFunctionStackAnalysis" value="true"/>
+    <property key="enableSharedReturnAnalysis" value="false"/>
+    <property key="emulateInstructionStateModifierClass" value="ghidra.program.emulation.ARMEmulateInstructionStateModifier"/>
+  </properties>
+  <programcounter register="pc"/>
+  <context_data>
+    <context_set space="ram">
+      <set name="TMode" val="0" description="0 for ARM 32-bit, 1 for THUMB 16-bit"/>
+      <set name="LRset" val="0" description="0 lr reg not set, 1 for LR set, affects BX as a call"/>
+    </context_set>
+    <tracked_set space="ram">
+      <set name="spsr" val="0"/>
+    </tracked_set>
+  </context_data>
+  
+  <default_symbols>
+    <symbol name="Reset" address="ram:0x0" entry="true"/>
+    <symbol name="UndefinedInstruction" address="ram:0x4" entry="true"/>
+    <symbol name="SupervisorCall" address="ram:0x8" entry="true"/>
+    <symbol name="PrefetchAbort" address="ram:0xC" entry="true"/>
+    <symbol name="DataAbort" address="ram:0x10" entry="true"/>
+    <symbol name="NotUsed" address="ram:0x14" entry="true"/>
+    <symbol name="IRQ" address="ram:0x18" entry="true"/>
+    <symbol name="FIQ" address="ram:0x1c" entry="true"/>
+    
+    <symbol name="H_Reset" address="ram:0xFFFF0000" entry="true"/>
+    <symbol name="H_UndefinedInstruction" address="ram:0xFFFF0004" entry="true"/>
+    <symbol name="H_SupervisorCall" address="ram:0xFFFF0008" entry="true"/>
+    <symbol name="H_PrefetchAbort" address="ram:0xFFFF000C" entry="true"/>
+    <symbol name="H_DataAbort" address="ram:0xFFFF0010" entry="true"/>
+    <symbol name="H_NotUsed" address="ram:0xFFFF0014" entry="true"/>
+    <symbol name="H_IRQ" address="ram:0xFFFF0018" entry="true"/>
+    <symbol name="H_FIQ" address="ram:0xFFFF001c" entry="true"/>
+    
+    <symbol name="INTC_0_REGS" address="ram:0x01800000"/>
+    <symbol name="PWRDWN_PDC_REGS" address="ram:0x01810000"/>
+    <symbol name="SYS_0_SECURITY_ID_REGS" address="ram:0x01811000"/>
+    <symbol name="SYS_0_REV_ID_REGS" address="ram:0x01812000"/>
+    <symbol name="IDMA_0_REGS" address="ram:0x01820000"/>
+    <symbol name="EMC_0_REGS" address="ram:0x01820000"/>
+    <symbol name="CACHE_0_REGS" address="ram:0x01840000"/>
+    
+    <symbol name="EDMA30CC_0_REGS" address="ram:0x01C00000"/>
+    <symbol name="EDMA30TC_0_REGS" address="ram:0x01C08000"/>
+    <symbol name="EDMA30TC_1_REGS" address="ram:0x01C08400"/>
+    
+    <symbol name="EDMA31CC_0_REGS" address="ram:0x01E30000"/>
+    <symbol name="EDMA31TC_0_REGS" address="ram:0x01E38000"/>
+    
+    <symbol name="PSC_0_REGS" address="ram:0x01C10000"/>
+    <symbol name="PSC0_REVID" address="ram:0X1C10000"/>
+    <symbol name="PSC0_INTEVAL" address="ram:0X1C10018"/>
+    <symbol name="PSC0_MERRPR0" address="ram:0X1C10040"/>
+    <symbol name="PSC0_MERRCR0" address="ram:0X1C10050"/>
+    <symbol name="PSC0_PERRPR" address="ram:0X1C10060"/>
+    <symbol name="PSC0_PERRCR" address="ram:0X1C10068"/>
+    <symbol name="PSC0_PTCMD" address="ram:0X1C10120"/>
+    <symbol name="PSC0_PTSTAT" address="ram:0X1C10128"/>
+    <symbol name="PSC0_PDSTAT0" address="ram:0X1C10200"/>
+    <symbol name="PSC0_PDSTAT1" address="ram:0X1C10204"/>
+    <symbol name="PSC0_PDCTL0" address="ram:0X1C10300"/>
+    <symbol name="PSC0_PDCTL1" address="ram:0X1C10304"/>
+    <symbol name="PSC0_PDCFG0" address="ram:0X1C10400"/>
+    <symbol name="PSC0_PDCFG1" address="ram:0X1C10404"/>
+    <symbol name="PSC0_MDSTAT" address="ram:0X1C10800"/>
+    <symbol name="PSC0_MDCTL" address="ram:0X1C10A00"/>
+
+    <symbol name="PLLC_0_REGS" address="ram:0x01C11000"/>
+    
+    <symbol name="SYSCFG_0_REGS" address="ram:0x01C14000"/>
+    <symbol name="SYSCFG0_REVID" address="ram:0X1C14000"/>
+    <symbol name="SYSCFG0_DIEIDR0" address="ram:0X1C14008"/>
+    <symbol name="SYSCFG0_DIEIDR1" address="ram:0X1C1400C"/>
+    <symbol name="SYSCFG0_DIEIDR2" address="ram:0X1C14010"/>
+    <symbol name="SYSCFG0_DIEIDR3" address="ram:0X1C14014"/>
+    <symbol name="SYSCFG0_DEVIDR0" address="ram:0X1C14018"/>
+    <symbol name="SYSCFG0_BOOTCFG" address="ram:0X1C14020"/>
+    <symbol name="SYSCFG0_KICK0R" address="ram:0X1C14038"/>
+    <symbol name="SYSCFG0_KICK1R" address="ram:0X1C1403C"/>
+    <symbol name="SYSCFG0_HOST0CFG" address="ram:0X1C14040"/>
+    <symbol name="SYSCFG0_IRAWSTAT" address="ram:0X1C140E0"/>
+    <symbol name="SYSCFG0_IENSTAT" address="ram:0X1C140E4"/>
+    <symbol name="SYSCFG0_IENSET" address="ram:0X1C140E8"/>
+    <symbol name="SYSCFG0_IENCLR" address="ram:0X1C140EC"/>
+    <symbol name="SYSCFG0_EOI" address="ram:0X1C140F0"/>
+    <symbol name="SYSCFG0_FLTADDRR" address="ram:0X1C140F4"/>
+    <symbol name="SYSCFG0_FLTSTAT" address="ram:0X1C140F8"/>
+    <symbol name="SYSCFG0_MSTPRI0" address="ram:0X1C14110"/>
+    <symbol name="SYSCFG0_MSTPRI1" address="ram:0X1C14114"/>
+    <symbol name="SYSCFG0_MSTPRI2" address="ram:0X1C14118"/>
+    <symbol name="SYSCFG0_PINMUX" address="ram:0X1C14120"/>
+    <symbol name="SYSCFG0_SUSPSRC" address="ram:0X1C14170"/>
+    <symbol name="SYSCFG0_CHIPSIG" address="ram:0X1C14174"/>
+    <symbol name="SYSCFG0_CHIPSIG_CLR" address="ram:0X1C14178"/>
+    <symbol name="SYSCFG0_CFGCHIP0" address="ram:0X1C1417C"/>
+    <symbol name="SYSCFG0_CFGCHIP1" address="ram:0X1C14180"/>
+    <symbol name="SYSCFG0_CFGCHIP2" address="ram:0X1C14184"/>
+    <symbol name="SYSCFG0_CFGCHIP3" address="ram:0X1C14188"/>
+    <symbol name="SYSCFG0_CFGCHIP4" address="ram:0X1C1418C"/>
+    
+    <symbol name="TMR_0_REGS" address="ram:0x01C20000"/>
+    <symbol name="TMR_1_REGS" address="ram:0x01C21000"/>
+   
+    <symbol name="I2C_0_REGS" address="ram:0x01C22000"/>   
+    <symbol name="I2C0_ICOAR" address="ram:0X1C22000"/>
+    <symbol name="I2C0_ICIMR" address="ram:0X1C22004"/>
+    <symbol name="I2C0_ICSTR" address="ram:0X1C22008"/>
+    <symbol name="I2C0_ICCLKL" address="ram:0X1C2200C"/>
+    <symbol name="I2C0_ICCLKH" address="ram:0X1C22010"/>
+    <symbol name="I2C0_ICCNT" address="ram:0X1C22014"/>
+    <symbol name="I2C0_ICDRR" address="ram:0X1C22018"/>
+    <symbol name="I2C0_ICSAR" address="ram:0X1C2201C"/>
+    <symbol name="I2C0_ICDXR" address="ram:0X1C22020"/>
+    <symbol name="I2C0_ICMDR" address="ram:0X1C22024"/>
+    <symbol name="I2C0_ICIVR" address="ram:0X1C22028"/>
+    <symbol name="I2C0_ICEMDR" address="ram:0X1C2202C"/>
+    <symbol name="I2C0_ICPSC" address="ram:0X1C22030"/>
+    <symbol name="I2C0_REVID1" address="ram:0X1C22034"/>
+    <symbol name="I2C0_REVID2" address="ram:0X1C22038"/>
+    <symbol name="I2C0_ICDMAC" address="ram:0X1C2203C"/>
+    <symbol name="I2C0_ICPFUNC" address="ram:0X1C22048"/>
+    <symbol name="I2C0_ICPDIR" address="ram:0X1C2204C"/>
+    <symbol name="I2C0_ICPDIN" address="ram:0X1C22050"/>
+    <symbol name="I2C0_ICPDOUT" address="ram:0X1C22054"/>
+    <symbol name="I2C0_ICPDSET" address="ram:0X1C22058"/>
+    <symbol name="I2C0_ICPDCLR" address="ram:0X1C2205C"/>
+    
+    <symbol name="I2C_1_REGS" address="ram:0x01E28000"/>    
+    <symbol name="I2C1_ICOAR" address="ram:0X1E28000"/>
+    <symbol name="I2C1_ICIMR" address="ram:0X1E28004"/>
+    <symbol name="I2C1_ICSTR" address="ram:0X1E28008"/>
+    <symbol name="I2C1_ICCLKL" address="ram:0X1E2800C"/>
+    <symbol name="I2C1_ICCLKH" address="ram:0X1E28010"/>
+    <symbol name="I2C1_ICCNT" address="ram:0X1E28014"/>
+    <symbol name="I2C1_ICDRR" address="ram:0X1E28018"/>
+    <symbol name="I2C1_ICSAR" address="ram:0X1E2801C"/>
+    <symbol name="I2C1_ICDXR" address="ram:0X1E28020"/>
+    <symbol name="I2C1_ICMDR" address="ram:0X1E28024"/>
+    <symbol name="I2C1_ICIVR" address="ram:0X1E28028"/>
+    <symbol name="I2C1_ICEMDR" address="ram:0X1E2802C"/>
+    <symbol name="I2C1_ICPSC" address="ram:0X1E28030"/>
+    <symbol name="I2C1_REVID1" address="ram:0X1E28034"/>
+    <symbol name="I2C1_REVID2" address="ram:0X1E28038"/>
+    <symbol name="I2C1_ICDMAC" address="ram:0X1E2803C"/>
+    <symbol name="I2C1_ICPFUNC" address="ram:0X1E28048"/>
+    <symbol name="I2C1_ICPDIR" address="ram:0X1E2804C"/>
+    <symbol name="I2C1_ICPDIN" address="ram:0X1E28050"/>
+    <symbol name="I2C1_ICPDOUT" address="ram:0X1E28054"/>
+    <symbol name="I2C1_ICPDSET" address="ram:0X1E28058"/>
+    <symbol name="I2C1_ICPDCLR" address="ram:0X1E2805C"/>
+    
+    <symbol name="RTC_0_REGS" address="ram:0x01C23000"/>
+    <symbol name="MMCSD_0_REGS" address="ram:0x01C40000"/>
+   
+    <symbol name="SPI_0_REGS" address="ram:0x01C41000"/>
+    <symbol name="SPI0_SPIGCR0" address="ram:0X1C41000"/>
+    <symbol name="SPI0_SPIGCR1" address="ram:0X1C41004"/>
+    <symbol name="SPI0_SPIINT0" address="ram:0X1C41008"/>
+    <symbol name="SPI0_SPILVL" address="ram:0X1C4100C"/>
+    <symbol name="SPI0_SPIFLG" address="ram:0X1C41010"/>
+    <symbol name="SPI0_SPIPC" address="ram:0X1C41014"/>
+    <symbol name="SPI0_SPIDAT0" address="ram:0X1C41038"/>
+    <symbol name="SPI0_SPIDAT1" address="ram:0X1C4103C"/>
+    <symbol name="SPI0_SPIBUF" address="ram:0X1C41040"/>
+    <symbol name="SPI0_SPIEMU" address="ram:0X1C41044"/>
+    <symbol name="SPI0_SPIDELAY" address="ram:0X1C41048"/>
+    <symbol name="SPI0_SPIDEF" address="ram:0X1C4104C"/>
+    <symbol name="SPI0_SPIFMT" address="ram:0X1C41050"/>
+    <symbol name="SPI0_INTVEC1" address="ram:0X1C41064"/>
+    
+    <symbol name="SPI_1_REGS" address="ram:0x01F0E000"/>
+    <symbol name="SPI1_SPIGCR0" address="ram:0X1F0E000"/>
+    <symbol name="SPI1_SPIGCR1" address="ram:0X1F0E004"/>
+    <symbol name="SPI1_SPIINT0" address="ram:0X1F0E008"/>
+    <symbol name="SPI1_SPILVL" address="ram:0X1F0E00C"/>
+    <symbol name="SPI1_SPIFLG" address="ram:0X1F0E010"/>
+    <symbol name="SPI1_SPIPC" address="ram:0X1F0E014"/>
+    <symbol name="SPI1_SPIDAT0" address="ram:0X1F0E038"/>
+    <symbol name="SPI1_SPIDAT1" address="ram:0X1F0E03C"/>
+    <symbol name="SPI1_SPIBUF" address="ram:0X1F0E040"/>
+    <symbol name="SPI1_SPIEMU" address="ram:0X1F0E044"/>
+    <symbol name="SPI1_SPIDELAY" address="ram:0X1F0E048"/>
+    <symbol name="SPI1_SPIDEF" address="ram:0X1F0E04C"/>
+    <symbol name="SPI1_SPIFMT" address="ram:0X1F0E050"/>
+    <symbol name="SPI1_INTVEC1" address="ram:0X1F0E064"/>
+    
+    <symbol name="UART_0_REGS" address="ram:0x01C42000"/>
+    <symbol name="UART0_RBR" address="ram:0X1C42000"/>
+    <symbol name="UART0_THR" address="ram:0X1C42000"/>
+    <symbol name="UART0_IER" address="ram:0X1C42004"/>
+    <symbol name="UART0_IIR" address="ram:0X1C42008"/>
+    <symbol name="UART0_FCR" address="ram:0X1C42008"/>
+    <symbol name="UART0_LCR" address="ram:0X1C4200C"/>
+    <symbol name="UART0_MCR" address="ram:0X1C42010"/>
+    <symbol name="UART0_LSR" address="ram:0X1C42014"/>
+    <symbol name="UART0_MSR" address="ram:0X1C42018"/>
+    <symbol name="UART0_SCR" address="ram:0X1C4201C"/>
+    <symbol name="UART0_DLL" address="ram:0X1C42020"/>
+    <symbol name="UART0_DLH" address="ram:0X1C42024"/>
+    <symbol name="UART0_REVID1" address="ram:0X1C42028"/>
+    <symbol name="UART0_REVID2" address="ram:0X1C4202C"/>
+    <symbol name="UART0_PWREMU_MGMT" address="ram:0X1C42030"/>
+    <symbol name="UART0_MDR" address="ram:0X1C42034"/>
+
+    
+    
+    <symbol name="MCASP_0_CTRL_REGS" address="ram:0x01D00000"/>
+    <symbol name="MCASP_0_FIFO_REGS" address="ram:0x01D01000"/>
+    <symbol name="MCASP_0_DATA_REGS" address="ram:0x01D02000"/>
+    
+    <symbol name="UART_1_REGS" address="ram:0x01D0C000"/>
+    <symbol name="UART1_RBR" address="ram:0X1D0C000"/>
+    <symbol name="UART1_THR" address="ram:0X1D0C000"/>
+    <symbol name="UART1_IER" address="ram:0X1D0C004"/>
+    <symbol name="UART1_IIR" address="ram:0X1D0C008"/>
+    <symbol name="UART1_FCR" address="ram:0X1D0C008"/>
+    <symbol name="UART1_LCR" address="ram:0X1D0C00C"/>
+    <symbol name="UART1_MCR" address="ram:0X1D0C010"/>
+    <symbol name="UART1_LSR" address="ram:0X1D0C014"/>
+    <symbol name="UART1_MSR" address="ram:0X1D0C018"/>
+    <symbol name="UART1_SCR" address="ram:0X1D0C01C"/>
+    <symbol name="UART1_DLL" address="ram:0X1D0C020"/>
+    <symbol name="UART1_DLH" address="ram:0X1D0C024"/>
+    <symbol name="UART1_REVID1" address="ram:0X1D0C028"/>
+    <symbol name="UART1_REVID2" address="ram:0X1D0C02C"/>
+    <symbol name="UART1_PWREMU_MGMT" address="ram:0X1D0C030"/>
+    <symbol name="UART1_MDR" address="ram:0X1D0C034"/>
+    
+    <symbol name="UART_2_REGS" address="ram:0x01D0D000"/>
+    <symbol name="UART2_RBR" address="ram:0X1D0D000"/>
+    <symbol name="UART2_THR" address="ram:0X1D0D000"/>
+    <symbol name="UART2_IER" address="ram:0X1D0D004"/>
+    <symbol name="UART2_IIR" address="ram:0X1D0D008"/>
+    <symbol name="UART2_FCR" address="ram:0X1D0D008"/>
+    <symbol name="UART2_LCR" address="ram:0X1D0D00C"/>
+    <symbol name="UART2_MCR" address="ram:0X1D0D010"/>
+    <symbol name="UART2_LSR" address="ram:0X1D0D014"/>
+    <symbol name="UART2_MSR" address="ram:0X1D0D018"/>
+    <symbol name="UART2_SCR" address="ram:0X1D0D01C"/>
+    <symbol name="UART2_DLL" address="ram:0X1D0D020"/>
+    <symbol name="UART2_DLH" address="ram:0X1D0D024"/>
+    <symbol name="UART2_REVID1" address="ram:0X1D0D028"/>
+    <symbol name="UART2_REVID2" address="ram:0X1D0D02C"/>
+    <symbol name="UART2_PWREMU_MGMT" address="ram:0X1D0D030"/>
+    <symbol name="UART2_MDR" address="ram:0X1D0D034"/>
+
+    
+    
+    <symbol name="MPU_0_REGS" address="ram:0x01E14000"/>
+    <symbol name="MPU_1_REGS" address="ram:0x01E15000"/>
+    
+
+
+
+    <symbol name="UPP_0_REGS" address="ram:0x01E16000"/>
+
+    <symbol name="PLLC_1_REGS" address="ram:0X01E1A000"/>
+    <symbol name="EMAC_DSC_CTRL_MOD_RAM" address="ram:0x01E20000"/>
+    <symbol name="EMAC_DSC_CTRL_MOD_REG" address="ram:0x01E22000"/>
+    <symbol name="EMAC_DSC_CONTROL_REG" address="ram:0x01E23000"/>
+    <symbol name="MDIO_0_REGS" address="ram:0x01E24000"/>
+    <symbol name="PRUCORE_0_REGS" address="ram:0x01C37000"/>
+    <symbol name="PRUCORE_1_REGS" address="ram:0x01C37800"/>
+    <symbol name="PRUINTC_0_REGS" address="ram:0x01C34000"/>
+    
+    <symbol name="USB_0_BASE" address="ram:0x01E00400"/>
+    <symbol name="USB_O_FADDR" address="ram:0X1E00400"/>
+    <symbol name="USB_O_POWER" address="ram:0X1E00401"/>
+    <symbol name="USB_O_TXIS" address="ram:0X1E00402"/>
+    <symbol name="USB_O_RXIS" address="ram:0X1E00404"/>
+    <symbol name="USB_O_TXIE" address="ram:0X1E00406"/>
+    <symbol name="USB_O_RXIE" address="ram:0X1E00408"/>
+    <symbol name="USB_O_IS" address="ram:0X1E0040A"/>
+    <symbol name="USB_O_IE" address="ram:0X1E0040B"/>
+    <symbol name="USB_O_FRAME" address="ram:0X1E0040C"/>
+    <symbol name="USB_O_EPIDX" address="ram:0X1E0040E"/>
+    <symbol name="USB_O_TEST" address="ram:0X1E0040F"/>
+    <symbol name="USB_O_FIFO0" address="ram:0X1E00420"/>
+    <symbol name="USB_O_FIFO1" address="ram:0X1E00424"/>
+    <symbol name="USB_O_FIFO2" address="ram:0X1E00428"/>
+    <symbol name="USB_O_FIFO3" address="ram:0X1E0042C"/>
+    <symbol name="USB_O_FIFO4" address="ram:0X1E00430"/>
+    <symbol name="USB_O_FIFO5" address="ram:0X1E00434"/>
+    <symbol name="USB_O_FIFO6" address="ram:0X1E00438"/>
+    <symbol name="USB_O_FIFO7" address="ram:0X1E0043C"/>
+    <symbol name="USB_O_FIFO8" address="ram:0X1E00440"/>
+    <symbol name="USB_O_FIFO9" address="ram:0X1E00444"/>
+    <symbol name="USB_O_FIFO10" address="ram:0X1E00448"/>
+    <symbol name="USB_O_FIFO11" address="ram:0X1E0044C"/>
+    <symbol name="USB_O_FIFO12" address="ram:0X1E00450"/>
+    <symbol name="USB_O_FIFO13" address="ram:0X1E00454"/>
+    <symbol name="USB_O_FIFO14" address="ram:0X1E00458"/>
+    <symbol name="USB_O_FIFO15" address="ram:0X1E0045C"/>
+    <symbol name="USB_O_DEVCTL" address="ram:0X1E00460"/>
+    <symbol name="USB_O_TXFIFOSZ" address="ram:0X1E00462"/>
+    <symbol name="USB_O_RXFIFOSZ" address="ram:0X1E00463"/>
+    <symbol name="USB_O_TXFIFOADD" address="ram:0X1E00464"/>
+    <symbol name="USB_O_RXFIFOADD" address="ram:0X1E00466"/>
+    <symbol name="USB_O_CONTIM" address="ram:0X1E0047A"/>
+    <symbol name="USB_O_VPLEN" address="ram:0X1E0047B"/>
+    <symbol name="USB_O_FSEOF" address="ram:0X1E0047D"/>
+    <symbol name="USB_O_LSEOF" address="ram:0X1E0047E"/>
+    <symbol name="USB_O_TXFUNCADDR0" address="ram:0X1E00480"/>
+    <symbol name="USB_O_TXHUBADDR0" address="ram:0X1E00482"/>
+    <symbol name="USB_O_TXHUBPORT0" address="ram:0X1E00483"/>
+    <symbol name="USB_O_TXFUNCADDR1" address="ram:0X1E00488"/>
+    <symbol name="USB_O_TXHUBADDR1" address="ram:0X1E0048A"/>
+    <symbol name="USB_O_TXHUBPORT1" address="ram:0X1E0048B"/>
+    <symbol name="USB_O_RXFUNCADDR1" address="ram:0X1E0048C"/>
+    <symbol name="USB_O_RXHUBADDR1" address="ram:0X1E0048E"/>
+    <symbol name="USB_O_RXHUBPORT1" address="ram:0X1E0048F"/>
+    <symbol name="USB_O_TXFUNCADDR2" address="ram:0X1E00490"/>
+    <symbol name="USB_O_TXHUBADDR2" address="ram:0X1E00492"/>
+    <symbol name="USB_O_TXHUBPORT2" address="ram:0X1E00493"/>
+    <symbol name="USB_O_RXFUNCADDR2" address="ram:0X1E00494"/>
+    <symbol name="USB_O_RXHUBADDR2" address="ram:0X1E00496"/>
+    <symbol name="USB_O_RXHUBPORT2" address="ram:0X1E00497"/>
+    <symbol name="USB_O_TXFUNCADDR3" address="ram:0X1E00498"/>
+    <symbol name="USB_O_TXHUBADDR3" address="ram:0X1E0049A"/>
+    <symbol name="USB_O_TXHUBPORT3" address="ram:0X1E0049B"/>
+    <symbol name="USB_O_RXFUNCADDR3" address="ram:0X1E0049C"/>
+    <symbol name="USB_O_RXHUBADDR3" address="ram:0X1E0049E"/>
+    <symbol name="USB_O_RXHUBPORT3" address="ram:0X1E0049F"/>
+    <symbol name="USB_O_TXFUNCADDR4" address="ram:0X1E004A0"/>
+    <symbol name="USB_O_TXHUBADDR4" address="ram:0X1E004A2"/>
+    <symbol name="USB_O_TXHUBPORT4" address="ram:0X1E004A3"/>
+    <symbol name="USB_O_RXFUNCADDR4" address="ram:0X1E004A4"/>
+    <symbol name="USB_O_RXHUBADDR4" address="ram:0X1E004A6"/>
+    <symbol name="USB_O_RXHUBPORT4" address="ram:0X1E004A7"/>
+    <symbol name="USB_O_TXFUNCADDR5" address="ram:0X1E004A8"/>
+    <symbol name="USB_O_TXHUBADDR5" address="ram:0X1E004AA"/>
+    <symbol name="USB_O_TXHUBPORT5" address="ram:0X1E004AB"/>
+    <symbol name="USB_O_RXFUNCADDR5" address="ram:0X1E004AC"/>
+    <symbol name="USB_O_RXHUBADDR5" address="ram:0X1E004AE"/>
+    <symbol name="USB_O_RXHUBPORT5" address="ram:0X1E004AF"/>
+    <symbol name="USB_O_TXFUNCADDR6" address="ram:0X1E004B0"/>
+    <symbol name="USB_O_TXHUBADDR6" address="ram:0X1E004B2"/>
+    <symbol name="USB_O_TXHUBPORT6" address="ram:0X1E004B3"/>
+    <symbol name="USB_O_RXFUNCADDR6" address="ram:0X1E004B4"/>
+    <symbol name="USB_O_RXHUBADDR6" address="ram:0X1E004B6"/>
+    <symbol name="USB_O_RXHUBPORT6" address="ram:0X1E004B7"/>
+    <symbol name="USB_O_TXFUNCADDR7" address="ram:0X1E004B8"/>
+    <symbol name="USB_O_TXHUBADDR7" address="ram:0X1E004BA"/>
+    <symbol name="USB_O_TXHUBPORT7" address="ram:0X1E004BB"/>
+    <symbol name="USB_O_RXFUNCADDR7" address="ram:0X1E004BC"/>
+    <symbol name="USB_O_RXHUBADDR7" address="ram:0X1E004BE"/>
+    <symbol name="USB_O_RXHUBPORT7" address="ram:0X1E004BF"/>
+    <symbol name="USB_O_TXFUNCADDR8" address="ram:0X1E004C0"/>
+    <symbol name="USB_O_TXHUBADDR8" address="ram:0X1E004C2"/>
+    <symbol name="USB_O_TXHUBPORT8" address="ram:0X1E004C3"/>
+    <symbol name="USB_O_RXFUNCADDR8" address="ram:0X1E004C4"/>
+    <symbol name="USB_O_RXHUBADDR8" address="ram:0X1E004C6"/>
+    <symbol name="USB_O_RXHUBPORT8" address="ram:0X1E004C7"/>
+    <symbol name="USB_O_TXFUNCADDR9" address="ram:0X1E004C8"/>
+    <symbol name="USB_O_TXHUBADDR9" address="ram:0X1E004CA"/>
+    <symbol name="USB_O_TXHUBPORT9" address="ram:0X1E004CB"/>
+    <symbol name="USB_O_RXFUNCADDR9" address="ram:0X1E004CC"/>
+    <symbol name="USB_O_RXHUBADDR9" address="ram:0X1E004CE"/>
+    <symbol name="USB_O_RXHUBPORT9" address="ram:0X1E004CF"/>
+    <symbol name="USB_O_TXFUNCADDR10" address="ram:0X1E004D0"/>
+    <symbol name="USB_O_TXHUBADDR10" address="ram:0X1E004D2"/>
+    <symbol name="USB_O_TXHUBPORT10" address="ram:0X1E004D3"/>
+    <symbol name="USB_O_RXFUNCADDR10" address="ram:0X1E004D4"/>
+    <symbol name="USB_O_RXHUBADDR10" address="ram:0X1E004D6"/>
+    <symbol name="USB_O_RXHUBPORT10" address="ram:0X1E004D7"/>
+    <symbol name="USB_O_TXFUNCADDR11" address="ram:0X1E004D8"/>
+    <symbol name="USB_O_TXHUBADDR11" address="ram:0X1E004DA"/>
+    <symbol name="USB_O_TXHUBPORT11" address="ram:0X1E004DB"/>
+    <symbol name="USB_O_RXFUNCADDR11" address="ram:0X1E004DC"/>
+    <symbol name="USB_O_RXHUBADDR11" address="ram:0X1E004DE"/>
+    <symbol name="USB_O_RXHUBPORT11" address="ram:0X1E004DF"/>
+    <symbol name="USB_O_TXFUNCADDR12" address="ram:0X1E004E0"/>
+    <symbol name="USB_O_TXHUBADDR12" address="ram:0X1E004E2"/>
+    <symbol name="USB_O_TXHUBPORT12" address="ram:0X1E004E3"/>
+    <symbol name="USB_O_RXFUNCADDR12" address="ram:0X1E004E4"/>
+    <symbol name="USB_O_RXHUBADDR12" address="ram:0X1E004E6"/>
+    <symbol name="USB_O_RXHUBPORT12" address="ram:0X1E004E7"/>
+    <symbol name="USB_O_TXFUNCADDR13" address="ram:0X1E004E8"/>
+    <symbol name="USB_O_TXHUBADDR13" address="ram:0X1E004EA"/>
+    <symbol name="USB_O_TXHUBPORT13" address="ram:0X1E004EB"/>
+    <symbol name="USB_O_RXFUNCADDR13" address="ram:0X1E004EC"/>
+    <symbol name="USB_O_RXHUBADDR13" address="ram:0X1E004EE"/>
+    <symbol name="USB_O_RXHUBPORT13" address="ram:0X1E004EF"/>
+    <symbol name="USB_O_TXFUNCADDR14" address="ram:0X1E004F0"/>
+    <symbol name="USB_O_TXHUBADDR14" address="ram:0X1E004F2"/>
+    <symbol name="USB_O_TXHUBPORT14" address="ram:0X1E004F3"/>
+    <symbol name="USB_O_RXFUNCADDR14" address="ram:0X1E004F4"/>
+    <symbol name="USB_O_RXHUBADDR14" address="ram:0X1E004F6"/>
+    <symbol name="USB_O_RXHUBPORT14" address="ram:0X1E004F7"/>
+    <symbol name="USB_O_TXFUNCADDR15" address="ram:0X1E004F8"/>
+    <symbol name="USB_O_TXHUBADDR15" address="ram:0X1E004FA"/>
+    <symbol name="USB_O_TXHUBPORT15" address="ram:0X1E004FB"/>
+    <symbol name="USB_O_RXFUNCADDR15" address="ram:0X1E004FC"/>
+    <symbol name="USB_O_RXHUBADDR15" address="ram:0X1E004FE"/>
+    <symbol name="USB_O_RXHUBPORT15" address="ram:0X1E004FF"/>
+    <symbol name="USB_O_CSRL0" address="ram:0X1E00502"/>
+    <symbol name="USB_O_CSRH0" address="ram:0X1E00503"/>
+    <symbol name="USB_O_COUNT0" address="ram:0X1E00508"/>
+    <symbol name="USB_O_TYPE0" address="ram:0X1E0050A"/>
+    <symbol name="USB_O_NAKLMT" address="ram:0X1E0050B"/>
+    <symbol name="USB_O_TXMAXP1" address="ram:0X1E00510"/>
+    <symbol name="USB_O_TXCSRL1" address="ram:0X1E00512"/>
+    <symbol name="USB_O_TXCSRH1" address="ram:0X1E00513"/>
+    <symbol name="USB_O_RXMAXP1" address="ram:0X1E00514"/>
+    <symbol name="USB_O_RXCSRL1" address="ram:0X1E00516"/>
+    <symbol name="USB_O_RXCSRH1" address="ram:0X1E00517"/>
+    <symbol name="USB_O_RXCOUNT1" address="ram:0X1E00518"/>
+    <symbol name="USB_O_TXTYPE1" address="ram:0X1E0051A"/>
+    <symbol name="USB_O_TXINTERVAL1" address="ram:0X1E0051B"/>
+    <symbol name="USB_O_RXTYPE1" address="ram:0X1E0051C"/>
+    <symbol name="USB_O_RXINTERVAL1" address="ram:0X1E0051D"/>
+    <symbol name="USB_O_TXMAXP2" address="ram:0X1E00520"/>
+    <symbol name="USB_O_TXCSRL2" address="ram:0X1E00522"/>
+    <symbol name="USB_O_TXCSRH2" address="ram:0X1E00523"/>
+    <symbol name="USB_O_RXMAXP2" address="ram:0X1E00524"/>
+    <symbol name="USB_O_RXCSRL2" address="ram:0X1E00526"/>
+    <symbol name="USB_O_RXCSRH2" address="ram:0X1E00527"/>
+    <symbol name="USB_O_RXCOUNT2" address="ram:0X1E00528"/>
+    <symbol name="USB_O_TXTYPE2" address="ram:0X1E0052A"/>
+    <symbol name="USB_O_TXINTERVAL2" address="ram:0X1E0052B"/>
+    <symbol name="USB_O_RXTYPE2" address="ram:0X1E0052C"/>
+    <symbol name="USB_O_RXINTERVAL2" address="ram:0X1E0052D"/>
+    <symbol name="USB_O_TXMAXP3" address="ram:0X1E00530"/>
+    <symbol name="USB_O_TXCSRL3" address="ram:0X1E00532"/>
+    <symbol name="USB_O_TXCSRH3" address="ram:0X1E00533"/>
+    <symbol name="USB_O_RXMAXP3" address="ram:0X1E00534"/>
+    <symbol name="USB_O_RXCSRL3" address="ram:0X1E00536"/>
+    <symbol name="USB_O_RXCSRH3" address="ram:0X1E00537"/>
+    <symbol name="USB_O_RXCOUNT3" address="ram:0X1E00538"/>
+    <symbol name="USB_O_TXTYPE3" address="ram:0X1E0053A"/>
+    <symbol name="USB_O_TXINTERVAL3" address="ram:0X1E0053B"/>
+    <symbol name="USB_O_RXTYPE3" address="ram:0X1E0053C"/>
+    <symbol name="USB_O_RXINTERVAL3" address="ram:0X1E0053D"/>
+    <symbol name="USB_O_TXMAXP4" address="ram:0X1E00540"/>
+    <symbol name="USB_O_TXCSRL4" address="ram:0X1E00542"/>
+    <symbol name="USB_O_TXCSRH4" address="ram:0X1E00543"/>
+    <symbol name="USB_O_RXMAXP4" address="ram:0X1E00544"/>
+    <symbol name="USB_O_RXCSRL4" address="ram:0X1E00546"/>
+    <symbol name="USB_O_RXCSRH4" address="ram:0X1E00547"/>
+    <symbol name="USB_O_RXCOUNT4" address="ram:0X1E00548"/>
+    <symbol name="USB_O_TXTYPE4" address="ram:0X1E0054A"/>
+    <symbol name="USB_O_TXINTERVAL4" address="ram:0X1E0054B"/>
+    <symbol name="USB_O_RXTYPE4" address="ram:0X1E0054C"/>
+    <symbol name="USB_O_RXINTERVAL4" address="ram:0X1E0054D"/>
+    <symbol name="USB_O_TXMAXP5" address="ram:0X1E00550"/>
+    <symbol name="USB_O_TXCSRL5" address="ram:0X1E00552"/>
+    <symbol name="USB_O_TXCSRH5" address="ram:0X1E00553"/>
+    <symbol name="USB_O_RXMAXP5" address="ram:0X1E00554"/>
+    <symbol name="USB_O_RXCSRL5" address="ram:0X1E00556"/>
+    <symbol name="USB_O_RXCSRH5" address="ram:0X1E00557"/>
+    <symbol name="USB_O_RXCOUNT5" address="ram:0X1E00558"/>
+    <symbol name="USB_O_TXTYPE5" address="ram:0X1E0055A"/>
+    <symbol name="USB_O_TXINTERVAL5" address="ram:0X1E0055B"/>
+    <symbol name="USB_O_RXTYPE5" address="ram:0X1E0055C"/>
+    <symbol name="USB_O_RXINTERVAL5" address="ram:0X1E0055D"/>
+    <symbol name="USB_O_TXMAXP6" address="ram:0X1E00560"/>
+    <symbol name="USB_O_TXCSRL6" address="ram:0X1E00562"/>
+    <symbol name="USB_O_TXCSRH6" address="ram:0X1E00563"/>
+    <symbol name="USB_O_RXMAXP6" address="ram:0X1E00564"/>
+    <symbol name="USB_O_RXCSRL6" address="ram:0X1E00566"/>
+    <symbol name="USB_O_RXCSRH6" address="ram:0X1E00567"/>
+    <symbol name="USB_O_RXCOUNT6" address="ram:0X1E00568"/>
+    <symbol name="USB_O_TXTYPE6" address="ram:0X1E0056A"/>
+    <symbol name="USB_O_TXINTERVAL6" address="ram:0X1E0056B"/>
+    <symbol name="USB_O_RXTYPE6" address="ram:0X1E0056C"/>
+    <symbol name="USB_O_RXINTERVAL6" address="ram:0X1E0056D"/>
+    <symbol name="USB_O_TXMAXP7" address="ram:0X1E00570"/>
+    <symbol name="USB_O_TXCSRL7" address="ram:0X1E00572"/>
+    <symbol name="USB_O_TXCSRH7" address="ram:0X1E00573"/>
+    <symbol name="USB_O_RXMAXP7" address="ram:0X1E00574"/>
+    <symbol name="USB_O_RXCSRL7" address="ram:0X1E00576"/>
+    <symbol name="USB_O_RXCSRH7" address="ram:0X1E00577"/>
+    <symbol name="USB_O_RXCOUNT7" address="ram:0X1E00578"/>
+    <symbol name="USB_O_TXTYPE7" address="ram:0X1E0057A"/>
+    <symbol name="USB_O_TXINTERVAL7" address="ram:0X1E0057B"/>
+    <symbol name="USB_O_RXTYPE7" address="ram:0X1E0057C"/>
+    <symbol name="USB_O_RXINTERVAL7" address="ram:0X1E0057D"/>
+    <symbol name="USB_O_TXMAXP8" address="ram:0X1E00580"/>
+    <symbol name="USB_O_TXCSRL8" address="ram:0X1E00582"/>
+    <symbol name="USB_O_TXCSRH8" address="ram:0X1E00583"/>
+    <symbol name="USB_O_RXMAXP8" address="ram:0X1E00584"/>
+    <symbol name="USB_O_RXCSRL8" address="ram:0X1E00586"/>
+    <symbol name="USB_O_RXCSRH8" address="ram:0X1E00587"/>
+    <symbol name="USB_O_RXCOUNT8" address="ram:0X1E00588"/>
+    <symbol name="USB_O_TXTYPE8" address="ram:0X1E0058A"/>
+    <symbol name="USB_O_TXINTERVAL8" address="ram:0X1E0058B"/>
+    <symbol name="USB_O_RXTYPE8" address="ram:0X1E0058C"/>
+    <symbol name="USB_O_RXINTERVAL8" address="ram:0X1E0058D"/>
+    <symbol name="USB_O_TXMAXP9" address="ram:0X1E00590"/>
+    <symbol name="USB_O_TXCSRL9" address="ram:0X1E00592"/>
+    <symbol name="USB_O_TXCSRH9" address="ram:0X1E00593"/>
+    <symbol name="USB_O_RXMAXP9" address="ram:0X1E00594"/>
+    <symbol name="USB_O_RXCSRL9" address="ram:0X1E00596"/>
+    <symbol name="USB_O_RXCSRH9" address="ram:0X1E00597"/>
+    <symbol name="USB_O_RXCOUNT9" address="ram:0X1E00598"/>
+    <symbol name="USB_O_TXTYPE9" address="ram:0X1E0059A"/>
+    <symbol name="USB_O_TXINTERVAL9" address="ram:0X1E0059B"/>
+    <symbol name="USB_O_RXTYPE9" address="ram:0X1E0059C"/>
+    <symbol name="USB_O_RXINTERVAL9" address="ram:0X1E0059D"/>
+    <symbol name="USB_O_TXMAXP10" address="ram:0X1E005A0"/>
+    <symbol name="USB_O_TXCSRL10" address="ram:0X1E005A2"/>
+    <symbol name="USB_O_TXCSRH10" address="ram:0X1E005A3"/>
+    <symbol name="USB_O_RXMAXP10" address="ram:0X1E005A4"/>
+    <symbol name="USB_O_RXCSRL10" address="ram:0X1E005A6"/>
+    <symbol name="USB_O_RXCSRH10" address="ram:0X1E005A7"/>
+    <symbol name="USB_O_RXCOUNT10" address="ram:0X1E005A8"/>
+    <symbol name="USB_O_TXTYPE10" address="ram:0X1E005AA"/>
+    <symbol name="USB_O_TXINTERVAL10" address="ram:0X1E005AB"/>
+    <symbol name="USB_O_RXTYPE10" address="ram:0X1E005AC"/>
+    <symbol name="USB_O_RXINTERVAL10" address="ram:0X1E005AD"/>
+    <symbol name="USB_O_TXMAXP11" address="ram:0X1E005B0"/>
+    <symbol name="USB_O_TXCSRL11" address="ram:0X1E005B2"/>
+    <symbol name="USB_O_TXCSRH11" address="ram:0X1E005B3"/>
+    <symbol name="USB_O_RXMAXP11" address="ram:0X1E005B4"/>
+    <symbol name="USB_O_RXCSRL11" address="ram:0X1E005B6"/>
+    <symbol name="USB_O_RXCSRH11" address="ram:0X1E005B7"/>
+    <symbol name="USB_O_RXCOUNT11" address="ram:0X1E005B8"/>
+    <symbol name="USB_O_TXTYPE11" address="ram:0X1E005BA"/>
+    <symbol name="USB_O_TXINTERVAL11" address="ram:0X1E005BB"/>
+    <symbol name="USB_O_RXTYPE11" address="ram:0X1E005BC"/>
+    <symbol name="USB_O_RXINTERVAL11" address="ram:0X1E005BD"/>
+    <symbol name="USB_O_TXMAXP12" address="ram:0X1E005C0"/>
+    <symbol name="USB_O_TXCSRL12" address="ram:0X1E005C2"/>
+    <symbol name="USB_O_TXCSRH12" address="ram:0X1E005C3"/>
+    <symbol name="USB_O_RXMAXP12" address="ram:0X1E005C4"/>
+    <symbol name="USB_O_RXCSRL12" address="ram:0X1E005C6"/>
+    <symbol name="USB_O_RXCSRH12" address="ram:0X1E005C7"/>
+    <symbol name="USB_O_RXCOUNT12" address="ram:0X1E005C8"/>
+    <symbol name="USB_O_TXTYPE12" address="ram:0X1E005CA"/>
+    <symbol name="USB_O_TXINTERVAL12" address="ram:0X1E005CB"/>
+    <symbol name="USB_O_RXTYPE12" address="ram:0X1E005CC"/>
+    <symbol name="USB_O_RXINTERVAL12" address="ram:0X1E005CD"/>
+    <symbol name="USB_O_TXMAXP13" address="ram:0X1E005D0"/>
+    <symbol name="USB_O_TXCSRL13" address="ram:0X1E005D2"/>
+    <symbol name="USB_O_TXCSRH13" address="ram:0X1E005D3"/>
+    <symbol name="USB_O_RXMAXP13" address="ram:0X1E005D4"/>
+    <symbol name="USB_O_RXCSRL13" address="ram:0X1E005D6"/>
+    <symbol name="USB_O_RXCSRH13" address="ram:0X1E005D7"/>
+    <symbol name="USB_O_RXCOUNT13" address="ram:0X1E005D8"/>
+    <symbol name="USB_O_TXTYPE13" address="ram:0X1E005DA"/>
+    <symbol name="USB_O_TXINTERVAL13" address="ram:0X1E005DB"/>
+    <symbol name="USB_O_RXTYPE13" address="ram:0X1E005DC"/>
+    <symbol name="USB_O_RXINTERVAL13" address="ram:0X1E005DD"/>
+    <symbol name="USB_O_TXMAXP14" address="ram:0X1E005E0"/>
+    <symbol name="USB_O_TXCSRL14" address="ram:0X1E005E2"/>
+    <symbol name="USB_O_TXCSRH14" address="ram:0X1E005E3"/>
+    <symbol name="USB_O_RXMAXP14" address="ram:0X1E005E4"/>
+    <symbol name="USB_O_RXCSRL14" address="ram:0X1E005E6"/>
+    <symbol name="USB_O_RXCSRH14" address="ram:0X1E005E7"/>
+    <symbol name="USB_O_RXCOUNT14" address="ram:0X1E005E8"/>
+    <symbol name="USB_O_TXTYPE14" address="ram:0X1E005EA"/>
+    <symbol name="USB_O_TXINTERVAL14" address="ram:0X1E005EB"/>
+    <symbol name="USB_O_RXTYPE14" address="ram:0X1E005EC"/>
+    <symbol name="USB_O_RXINTERVAL14" address="ram:0X1E005ED"/>
+    <symbol name="USB_O_TXMAXP15" address="ram:0X1E005F0"/>
+    <symbol name="USB_O_TXCSRL15" address="ram:0X1E005F2"/>
+    <symbol name="USB_O_TXCSRH15" address="ram:0X1E005F3"/>
+    <symbol name="USB_O_RXMAXP15" address="ram:0X1E005F4"/>
+    <symbol name="USB_O_RXCSRL15" address="ram:0X1E005F6"/>
+    <symbol name="USB_O_RXCSRH15" address="ram:0X1E005F7"/>
+    <symbol name="USB_O_RXCOUNT15" address="ram:0X1E005F8"/>
+    <symbol name="USB_O_TXTYPE15" address="ram:0X1E005FA"/>
+    <symbol name="USB_O_TXINTERVAL15" address="ram:0X1E005FB"/>
+    <symbol name="USB_O_RXTYPE15" address="ram:0X1E005FC"/>
+    <symbol name="USB_O_RXINTERVAL15" address="ram:0X1E005FD"/>
+    <symbol name="USB_O_RQPKTCOUNT1" address="ram:0X1E00704"/>
+    <symbol name="USB_O_RQPKTCOUNT2" address="ram:0X1E00708"/>
+    <symbol name="USB_O_RQPKTCOUNT3" address="ram:0X1E0070C"/>
+    <symbol name="USB_O_RQPKTCOUNT4" address="ram:0X1E00710"/>
+    <symbol name="USB_O_RQPKTCOUNT5" address="ram:0X1E00714"/>
+    <symbol name="USB_O_RQPKTCOUNT6" address="ram:0X1E00718"/>
+    <symbol name="USB_O_RQPKTCOUNT7" address="ram:0X1E0071C"/>
+    <symbol name="USB_O_RQPKTCOUNT8" address="ram:0X1E00720"/>
+    <symbol name="USB_O_RQPKTCOUNT9" address="ram:0X1E00724"/>
+    <symbol name="USB_O_RQPKTCOUNT10" address="ram:0X1E00728"/>
+    <symbol name="USB_O_RQPKTCOUNT11" address="ram:0X1E0072C"/>
+    <symbol name="USB_O_RQPKTCOUNT12" address="ram:0X1E00730"/>
+    <symbol name="USB_O_RQPKTCOUNT13" address="ram:0X1E00734"/>
+    <symbol name="USB_O_RQPKTCOUNT14" address="ram:0X1E00738"/>
+    <symbol name="USB_O_RQPKTCOUNT15" address="ram:0X1E0073C"/>
+    <symbol name="USB_O_RXDPKTBUFDIS" address="ram:0X1E00740"/>
+    <symbol name="USB_O_TXDPKTBUFDIS" address="ram:0X1E00742"/>
+    <symbol name="USB_O_EPC" address="ram:0X1E00800"/>
+    <symbol name="USB_O_EPCRIS" address="ram:0X1E00804"/>
+    <symbol name="USB_O_EPCIM" address="ram:0X1E00808"/>
+    <symbol name="USB_O_EPCISC" address="ram:0X1E0080C"/>
+    <symbol name="USB_O_DRRIS" address="ram:0X1E00810"/>
+    <symbol name="USB_O_DRIM" address="ram:0X1E00814"/>
+    <symbol name="USB_O_DRISC" address="ram:0X1E00818"/>
+    <symbol name="USB_O_GPCS" address="ram:0X1E0081C"/>
+    <symbol name="USB_O_VDC" address="ram:0X1E00830"/>
+    <symbol name="USB_O_VDCRIS" address="ram:0X1E00834"/>
+    <symbol name="USB_O_VDCIM" address="ram:0X1E00838"/>
+    <symbol name="USB_O_VDCISC" address="ram:0X1E0083C"/>
+    <symbol name="USB_O_IDVRIS" address="ram:0X1E00844"/>
+    <symbol name="USB_O_IDVIM" address="ram:0X1E00848"/>
+    <symbol name="USB_O_IDVISC" address="ram:0X1E0084C"/>
+    <symbol name="USB_O_DMASEL" address="ram:0X1E00850"/>
+    
+    <symbol name="USB_0_OTG_BASE" address="ram:0x01E00000"/>
+    <symbol name="USB_0_REVISION" address="ram:0X1E00000"/>
+    <symbol name="USB_0_CTRL" address="ram:0X1E00004"/>
+    <symbol name="USB_0_STAT" address="ram:0X1E00008"/>
+    <symbol name="USB_0_EMULATION" address="ram:0X1E00008"/>
+    <symbol name="USB_0_MODE" address="ram:0X1E00010"/>
+    <symbol name="USB_0_AUTOREQ" address="ram:0X1E00014"/>
+    <symbol name="USB_0_SRP_FIX_TIME" address="ram:0X1E00018"/>
+    <symbol name="USB_0_TEARDOWN" address="ram:0X1E0001C"/>
+    <symbol name="USB_0_INTR_SRC" address="ram:0X1E00020"/>
+    <symbol name="USB_0_INTR_SRC_SET" address="ram:0X1E00024"/>
+    <symbol name="USB_0_INTR_SRC_CLEAR" address="ram:0X1E00028"/>
+    <symbol name="USB_0_INTR_MASK" address="ram:0X1E0002C"/>
+    <symbol name="USB_0_INTR_MASK_SET" address="ram:0X1E00030"/>
+    <symbol name="USB_0_INTR_MASK_CLEAR" address="ram:0X1E00034"/>
+    <symbol name="USB_0_INTR_SRC_MASKED" address="ram:0X1E00038"/>
+    <symbol name="USB_0_END_OF_INTR" address="ram:0X1E0003C"/>
+    <symbol name="USB_0_GEN_RNDIS_SIZE_EP1" address="ram:0X1E00050"/>
+    <symbol name="USB_0_GEN_RNDIS_SIZE_EP2" address="ram:0X1E00054"/>
+    <symbol name="USB_0_GEN_RNDIS_SIZE_EP3" address="ram:0X1E00058"/>
+    <symbol name="USB_0_GEN_RNDIS_SIZE_EP4" address="ram:0X1E0005C"/>
+    <symbol name="USB_0_GENR_INTR" address="ram:0X1E00022"/>
+    
+    <symbol name="GPIO_0_REGS" address="ram:0x01E26000"/>
+    <symbol name="GPIO_BINTEN" address="ram:0x01E26008"/>
+    
+    <symbol name="PSC_1_REGS" address="ram:0x01E27000"/>
+    <symbol name="PSC1_REVID" address="ram:0X1E27000"/>
+    <symbol name="PSC1_INTEVAL" address="ram:0X1E27018"/>
+    <symbol name="PSC1_MERRPR0" address="ram:0X1E27040"/>
+    <symbol name="PSC1_MERRCR0" address="ram:0X1E27050"/>
+    <symbol name="PSC1_PERRPR" address="ram:0X1E27060"/>
+    <symbol name="PSC1_PERRCR" address="ram:0X1E27068"/>
+    <symbol name="PSC1_PTCMD" address="ram:0X1E27120"/>
+    <symbol name="PSC1_PTSTAT" address="ram:0X1E27128"/>
+    <symbol name="PSC1_PDSTAT0" address="ram:0X1E27200"/>
+    <symbol name="PSC1_PDSTAT1" address="ram:0X1E27204"/>
+    <symbol name="PSC1_PDCTL0" address="ram:0X1E27300"/>
+    <symbol name="PSC1_PDCTL1" address="ram:0X1E27304"/>
+    <symbol name="PSC1_PDCFG0" address="ram:0X1E27400"/>
+    <symbol name="PSC1_PDCFG1" address="ram:0X1E27404"/>
+    <symbol name="PSC1_MDSTAT" address="ram:0X1E27800"/>
+    <symbol name="PSC1_MDCTL" address="ram:0X1E27A00"/>
+
+    <symbol name="SYSCFG_1_REGS" address="ram:0x01E2C000"/>
+    <symbol name="SYSCFG1_VTPIO_CTL" address="ram:0X1E2C000"/>
+    <symbol name="SYSCFG1_DDR_SLEW" address="ram:0X1E2C004"/>
+    <symbol name="SYSCFG1_DEEPSLEEP" address="ram:0X1E2C008"/>
+    <symbol name="SYSCFG1_PUPD_ENA" address="ram:0X1E2C00C"/>
+    <symbol name="SYSCFG1_PUPD_SEL" address="ram:0X1E2C010"/>
+    <symbol name="SYSCFG1_RXACTIVE" address="ram:0X1E2C014"/>
+    <symbol name="SYSCFG1_PWRDN" address="ram:0X1E2C018"/>
+
+    <symbol name="ECAP_0_REGS" address="ram:0x01F06000"/>
+    <symbol name="ECAP_1_REGS" address="ram:0x01F07000"/>
+    <symbol name="ECAP_2_REGS" address="ram:0x01F08000"/>
+    <symbol name="TMR_2_REGS" address="ram:0x01F0C000"/>
+    <symbol name="TMR_3_REGS" address="ram:0x01F0D000"/>
+    
+    <symbol name="EMIFA_0_REGS" address="ram:0x68000000"/>
+    <symbol name="EMIFA_MIDR" address="ram:0X68000000"/>
+    <symbol name="EMIFA_AWCC" address="ram:0X68000004"/>
+    <symbol name="EMIFA_SDCR" address="ram:0X68000008"/>
+    <symbol name="EMIFA_SDRCR" address="ram:0X6800000C"/>
+    <symbol name="EMIFA_CE2CFG" address="ram:0X68000010"/>
+    <symbol name="EMIFA_CE3CFG" address="ram:0X68000014"/>
+    <symbol name="EMIFA_CE4CFG" address="ram:0X68000018"/>
+    <symbol name="EMIFA_CE5CFG" address="ram:0X6800001C"/>
+    <symbol name="EMIFA_SDTIMR" address="ram:0X68000020"/>
+    <symbol name="EMIFA_SDSRETR" address="ram:0X6800003C"/>
+    <symbol name="EMIFA_INTRAW" address="ram:0X68000040"/>
+    <symbol name="EMIFA_INTMSK" address="ram:0X68000044"/>
+    <symbol name="EMIFA_INTMSKSET" address="ram:0X68000048"/>
+    <symbol name="EMIFA_INTMSKCLR" address="ram:0X6800004C"/>
+    <symbol name="EMIFA_NANDFCR" address="ram:0X68000060"/>
+    <symbol name="EMIFA_NANDFSR" address="ram:0X68000064"/>
+    <symbol name="EMIFA_PMCR" address="ram:0X68000068"/>
+    <symbol name="EMIFA_NANDF1ECC" address="ram:0X68000070"/>
+    <symbol name="EMIFA_NANDF2ECC" address="ram:0X68000074"/>
+    <symbol name="EMIFA_NANDF3ECC" address="ram:0X68000078"/>
+    <symbol name="EMIFA_NANDF4ECC" address="ram:0X6800007C"/>
+    <symbol name="EMIFA_NAND4BITECCLOAD" address="ram:0X680000BC"/>
+    <symbol name="EMIFA_NAND4BITECC1" address="ram:0X680000C0"/>
+    <symbol name="EMIFA_NAND4BITECC2" address="ram:0X680000C4"/>
+    <symbol name="EMIFA_NAND4BITECC3" address="ram:0X680000C8"/>
+    <symbol name="EMIFA_NAND4BITECC4" address="ram:0X680000CC"/>
+    <symbol name="EMIFA_NANDERRADD1" address="ram:0X680000D0"/>
+    <symbol name="EMIFA_NANDERRADD2" address="ram:0X680000D4"/>
+    <symbol name="EMIFA_NANDERRVAL1" address="ram:0X680000D8"/>
+    <symbol name="EMIFA_NANDERRVAL2" address="ram:0X680000DC"/>
+    
+    <symbol name="EMIFA_CS0_ADDR" address="ram:0x40000000"/>
+    <symbol name="EMIFA_CS2_ADDR" address="ram:0x60000000"/>
+    <symbol name="EMIFA_CS3_ADDR" address="ram:0x62000000"/>
+    <symbol name="EMIFA_CS4_ADDR" address="ram:0x64000000"/>
+    <symbol name="EMIFA_CS5_ADDR" address="ram:0x66000000"/>
+    
+    <symbol name="OC_RAM" address="ram:0x80000000"/>
+    
+    <symbol name="DDR2_0_CTRL_REGS" address="ram:0xB0000000"/>
+    <symbol name="DDR2_MDDR_REVID" address="ram:0XB0000000"/>
+    <symbol name="DDR2_MDDR_SDRSTAT" address="ram:0XB0000004"/>
+    <symbol name="DDR2_MDDR_SDCR" address="ram:0XB0000008"/>
+    <symbol name="DDR2_MDDR_SDRCR" address="ram:0XB000000C"/>
+    <symbol name="DDR2_MDDR_SDTIMR1" address="ram:0XB0000010"/>
+    <symbol name="DDR2_MDDR_SDTIMR2" address="ram:0XB0000014"/>
+    <symbol name="DDR2_MDDR_SDCR2" address="ram:0XB000001C"/>
+    <symbol name="DDR2_MDDR_PBBPR" address="ram:0XB0000020"/>
+    <symbol name="DDR2_MDDR_PC1" address="ram:0XB0000040"/>
+    <symbol name="DDR2_MDDR_PC2" address="ram:0XB0000044"/>
+    <symbol name="DDR2_MDDR_PCC" address="ram:0XB0000048"/>
+    <symbol name="DDR2_MDDR_PCMRS" address="ram:0XB000004C"/>
+    <symbol name="DDR2_MDDR_PCT" address="ram:0XB0000050"/>
+    <symbol name="DDR2_MDDR_IRR" address="ram:0XB00000C0"/>
+    <symbol name="DDR2_MDDR_IMR" address="ram:0XB00000C4"/>
+    <symbol name="DDR2_MDDR_IMSR" address="ram:0XB00000C8"/>
+    <symbol name="DDR2_MDDR_IMCR" address="ram:0XB00000CC"/>
+    <symbol name="DDR2_MDDR_DRPYC1R" address="ram:0XB00000E4"/>
+    
+    <symbol name="DDR2_0_DATA_REGS" address="ram:0xC0000000"/>
+    
+    <symbol name="ARM_ROM" address="ram:0xFFFD0000"/>
+    
+    <symbol name="AINTC_0_REGS" address="ram:0xFFFEE000"/>
+    
+    <symbol name="ARM_RAM" address="ram:0xFFFF0000"/>
+    
+    <symbol name="MEMPROT_L2_REGS" address="ram:0x00800000"/>
+    <symbol name="MEMPROT_L1P_REGS" address="ram:0x00E00000"/>
+    <symbol name="MEMPROT_L1D_REGS" address="ram:0x00F00000"/>
+    
+    
+  </default_symbols>
+  
+</processor_spec>
+
+
+ 
