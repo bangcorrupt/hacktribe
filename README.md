@@ -18,5 +18,7 @@ Edit header if currently running synth firmware.
     
     python scripts/e2-header.py hacked-SYSTEM.VSB
 
+Use `samples/hacktribe-blank-e2sSample.all` to free up sampling time.
+
 ## License
 Contents of patch directory not covered by GPL.
