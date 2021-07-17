@@ -13,5 +13,7 @@ Apply patch to Electribe Sampler firmware version 2.02 only.
     bspatch SYSTEM.VSB hacked-SYSTEM.VSB patch/hacktribe-2.patch
     sha256sum -c hash/hacked-SYSTEM.VSB.sha
 
+Installation to synth hardware requires editing header.
+
 ## License
 Contents of patch directory not covered by GPL.
