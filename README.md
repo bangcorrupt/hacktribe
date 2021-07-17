@@ -2,7 +2,7 @@
 Electribe 2 hacks.
 
 ## License
-Contents of patch directory is not covered by GPL.
+Contents of patch directory not covered by GPL.
 
 ## How To
 Apply patch to Electribe Sampler firmware version 2.02 only.
