@@ -5,7 +5,6 @@ Electribe 2 hacks.
 - Sampling
 - All filters
 - All oscillators + more
-- Hardware agnostic
 
 ## How To
 Apply patch to Electribe Sampler firmware version 2.02 only.
