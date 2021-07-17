@@ -3,7 +3,7 @@ Electribe 2 hacks.
 
 ## Features
 - Sampling
-- Filters
+- All filters
 - Hardware agnostic
 
 ## How To
