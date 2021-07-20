@@ -14,12 +14,15 @@ if os.path.exists(path):
     print('Modifying header', os.path.basename(path))
 
 
-with open(path, 'rb') as f:
-    hak = bytearray(f.read())
+    with open(path, 'rb') as f:
+        hak = bytearray(f.read())
 
-# e2s-e2
-hak[0x12] = 0x00
-hak[0x2e] = 0x23
+    # e2s-e2
+    hak[0x12] = 0x00
+    hak[0x2e] = 0x23
 
-with open(path, 'wb') as f:
-    f.write(hak)
+    with open(path, 'wb') as f:
+        f.write(hak)
+
+else:
+    print('File not found')
