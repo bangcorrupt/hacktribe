@@ -38,7 +38,7 @@ if os.path.exists(vsb_path):
         
         assert len(fw) == 0x200100
         
-        with open(vsb_path+'_modified', 'wb') as f:
+        with open(vsb_path, 'wb') as f:
             f.write(fw)
 
     else:
