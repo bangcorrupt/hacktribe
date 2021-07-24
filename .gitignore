@@ -1,1 +1,3 @@
-*.VSB
+*.VSB*
+*.e2pat*
+*.e2spat*
