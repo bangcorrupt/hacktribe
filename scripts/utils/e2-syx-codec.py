@@ -46,7 +46,6 @@ def syx_enc(byt):
             if (lng - i) < 7:
                 lim = 7 - (lng - i) + 1
 
-
     syx = [item for sublist in lst for item in sublist]
 
     return syx
