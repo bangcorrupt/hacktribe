@@ -32,6 +32,7 @@ if os.path.exists(vsb_path):
         head = vsb[:0x100]
         hak = vsb[0x100:]
 
+        # Sampler v2.02
         hak[0xcff58:0xcff58+0x3c00] = pat
 
         fw = head + hak
