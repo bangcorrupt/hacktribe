@@ -1,11 +1,12 @@
 # Hacktribe
-Electribe 2 hacks.
+Electribe 2 hacks, based on sampler version 2.02.
 
 ## Features
 - Sampling
 - Filters
 - Oscillators
 - Custom init pattern
+- Supports synth and sampler hardware
 
 ## How To
 Apply patch to Electribe Sampler firmware version 2.02 only:
