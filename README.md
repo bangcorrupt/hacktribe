@@ -1,5 +1,5 @@
 # Hacktribe
-Electribe 2 hacks, based on sampler version 2.02.
+Electribe 2 hacks, based on sampler firmware version 2.02.
 
 ## Features
 - Sampling
