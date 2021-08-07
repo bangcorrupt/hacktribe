@@ -9,6 +9,13 @@ Electribe 2 hacks, based on sampler firmware version 2.02.
 - Supports synth and sampler hardware
 
 ## How To
+Use `--recurse-submodules` to ensure scripts are up to date:
+    
+    git clone --recurse-submodules https://github.com/bangcorrupt/hacktribe.git
+
+****
+Update electribe to factory firmware version 2.02 before continuing.
+****
 Apply patch to Electribe Sampler firmware version 2.02 only:
 
     sha256sum -c hash/SYSTEM.VSB.sha
@@ -23,6 +30,8 @@ Optionally, set custom init pattern:
 
     python scripts/e2s-init-pat.py hacked-SYSTEM.VSB init-pat.e2spat
 
+Rename `hacked-SYSTEM.VSB` to `SYSTEM.VSB`, use it to update electribe and reboot.
+****
 Use `samples/hacktribe-blank-e2sSample.all` to free up sampling time.
 
 ## License
