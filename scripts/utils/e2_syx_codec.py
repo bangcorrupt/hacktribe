@@ -41,6 +41,7 @@ def syx_enc(byt):
             lst.append([b])
             lst.append(tmp)
             tmp = []
+            b = 0
             cnt = 7
 
             if (lng - i) < 7:
