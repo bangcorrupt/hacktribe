@@ -24,3 +24,7 @@ Optionally, set custom init pattern:
     python scripts/e2s-init-pat.py hacked-SYSTEM.VSB init-pat.e2spat
 
 Use `samples/hacktribe-blank-e2sSample.all` to free up sampling time.
+
+## License
+Contents of `patch` and `samples` directories are not open source and are not covered the GPL.
+All other files licensed AGPL-3.0 unless otherwise stated.
