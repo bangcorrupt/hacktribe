@@ -24,7 +24,6 @@ Optionally, set custom init pattern:
 
     python scripts/e2s-init-pat.py hacked-SYSTEM.VSB init-pat.e2spat
 
-Rename `hacked-SYSTEM.VSB` to `SYSTEM.VSB`, use it to update electribe and reboot.
 
 Use `samples/hacktribe-blank-e2sSample.all` to free up sampling time.
 
