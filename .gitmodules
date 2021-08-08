@@ -1,5 +1,4 @@
 [submodule "scripts"]
 	path = scripts
 	url = ../e2-scripts.git
-        update = merge
 	branch = master
