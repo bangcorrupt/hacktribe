@@ -1,4 +1,5 @@
 *.VSB*
 *.e2pat*
 *.e2spat*
+*.bin*
 create-patch.sh
