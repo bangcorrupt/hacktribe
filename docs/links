@@ -1,0 +1,35 @@
+AM1802:
+
+Datasheet:
+https://www.ti.com/lit/ds/symlink/am1802.pdf
+
+Technical Reference Manual:
+https://www.ti.com/lit/ug/spruh84c/spruh84c.pdf
+
+Bootloader:
+https://www.ti.com/lit/an/spraba5d/spraba5d.pdf
+
+
+
+BF523:
+
+Datasheet:
+https://www.analog.com/media/en/technical-documentation/data-sheets/ADSP-BF522_BF523_BF524_BF525_BF526_BF527.pdf
+
+Hardware Reference:
+https://www.analog.com/media/en/dsp-documentation/processor-manuals/ADSP-BF52x_hwr_rev1.2.pdf
+
+Programming Reference:
+https://www.analog.com/media/en/dsp-documentation/processor-manuals/Blackfin_pgr_rev2.2.pdf
+
+Boot Process:
+https://www.analog.com/media/en/technical-documentation/application-notes/EE-240_Rev4.pdf
+
+
+OpenOCD:
+
+Manual:
+http://www.openocd.org/doc/html/
+
+
+

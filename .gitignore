@@ -1,0 +1,6 @@
+*.VSB*
+*.e2pat*
+*.e2spat*
+*.bin*
+*patch.sh
+*.geany
