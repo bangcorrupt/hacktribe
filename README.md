@@ -5,9 +5,8 @@ Electribe 2 hacks, based on sampler firmware version 2.02.
 - Sampling
 - Filters
 - Oscillators
-- More IFX
-- More scales
-- More grooves
+- More IFX, grooves, scales
+- Import/Export IFX, grooves
 - Custom init pattern
 - Supports synth and sampler hardware
 
