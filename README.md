@@ -25,6 +25,19 @@ If you have more questions or need support, see **[Discussions](../../discussion
 
 If something is not working, post a bug report in the **[Issue Tracker](../../issues)**.
 
+## Sponsor
+Hacktribe is free (as in beer) and always will be.  
+
+If you want to support this project financially, you are most welcome to [become a sponsor](https://github.com/sponsors/bangcorrupt).  
+
+My sincerest gratitude to all who have chosen to do so:
+
+[BKLronin](https://github.com/BKLronin)
+
+[ptowns](https://github.com/ptowns)
+
+See [How to support hacktribe](https://github.com/bangcorrupt/hacktribe/discussions/63) for more details.
+
 ## License
 Contents of `patch` directory is not open source and is not covered the GPL.
 
