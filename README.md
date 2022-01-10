@@ -32,6 +32,8 @@ If you want to support this project financially, you are most welcome to [become
 
 My sincerest gratitude to all who have chosen to do so:
 
+[maks](https://github.com/maks)
+
 [BKLronin](https://github.com/BKLronin)
 
 [ptowns](https://github.com/ptowns)
@@ -39,6 +41,6 @@ My sincerest gratitude to all who have chosen to do so:
 See [How to support hacktribe](https://github.com/bangcorrupt/hacktribe/discussions/63) for more details.
 
 ## License
-Contents of `patch` directory is not open source and is not covered the GPL.
+Contents of `patch` directory is not open source and is not covered by the GPL.
 
 All other files licensed AGPL-3.0 unless stated otherwise.
