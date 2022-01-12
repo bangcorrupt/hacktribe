@@ -38,6 +38,8 @@ My sincerest gratitude to all who have chosen to do so:
 
 [ptowns](https://github.com/ptowns)
 
+[richardarnezjames](https://github.com/richardarnezjames)
+
 See [How to support hacktribe](https://github.com/bangcorrupt/hacktribe/discussions/63) for more details.
 
 ## License
