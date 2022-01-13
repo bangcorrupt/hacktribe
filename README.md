@@ -34,6 +34,8 @@ My sincerest gratitude to all who have chosen to do so:
 
 [maks](https://github.com/maks)
 
+[AndrewSosna](https://github.com/AndrewSosna)
+
 [BKLronin](https://github.com/BKLronin)
 
 [ptowns](https://github.com/ptowns)
