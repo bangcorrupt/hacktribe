@@ -36,6 +36,8 @@ My sincerest gratitude to all who have chosen to do so:
 
 [AndrewSosna](https://github.com/AndrewSosna)
 
+[tiberiuichim](https://github.com/tiberiuichim)
+
 [BKLronin](https://github.com/BKLronin)
 
 [ptowns](https://github.com/ptowns)
