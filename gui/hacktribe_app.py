@@ -97,6 +97,7 @@ class HacktribeApp:
         if not fw.check_hash(source_hash):
             self.ui.log_text.append('ERROR: Incorrect source file.')
             self.ui.log_text.append('Electribe 2 Sampler firmware version 2.02 only.')
+            self.ui.log_text.append('-------------------------------------------------')
             return
         else:
             self.ui.log_text.append('Electribe 2 Sampler firmware version 2.02 found.\n')
@@ -140,12 +141,11 @@ class HacktribeApp:
                 f.write(fw.data)
             
             self.ui.log_text.append('Firmware patched successfully.')
-            
-            self.ui.log_text.append('-------------------------------------------------')
         
         else:
             self.ui.log_text.append('ERROR: Patch failed.')
 
+        self.ui.log_text.append('-------------------------------------------------')
 
 if __name__ == "__main__":
     main()
