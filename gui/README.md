@@ -20,3 +20,10 @@ Run `hacktribe_app.py`:
 
 Follow the instructions in the app, pay attention to the log output in the text box.
 
+<br/>
+
+Installation of bsdiff4 will fail on Windows without the correct build tools installed, see [#103](https://github.com/bangcorrupt/hacktribe/issues/103).
+
+A [self contained executable](https://github.com/bangcorrupt/hacktribe/tree/dev/gui/hacktribe-gui.exe)  is available for Windows.
+
+
