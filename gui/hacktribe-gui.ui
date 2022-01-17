@@ -42,7 +42,7 @@
              </size>
             </property>
             <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;1. Select source file. This must be Electribe 2 &lt;span style=&quot; font-weight:600;&quot;&gt;Sampler&lt;/span&gt; firmware version &lt;span style=&quot; font-weight:600;&quot;&gt;2.02&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;2. Select patch file. This must be 'hacktribe-2.patch' from the hacktribe repo&lt;/p&gt;&lt;p&gt;3. Select destination file. This is where the patched firmware will be saved.&lt;/p&gt;&lt;p&gt;4. If installing to synth hardware for the first time, select 'Modify file header...'. &lt;/p&gt;&lt;p&gt;5. Click 'Patch Firmware' button.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;1. Select source file. This must be Electribe 2 &lt;span style=&quot; font-weight:600;&quot;&gt;Sampler&lt;/span&gt; firmware version &lt;span style=&quot; font-weight:600;&quot;&gt;2.02&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;2. Select patch file. This must be 'hacktribe-2.patch' from the hacktribe repo&lt;/p&gt;&lt;p&gt;3. Select destination path. This is where the patched firmware will be saved.&lt;/p&gt;&lt;p&gt;4. If installing to synth hardware for the first time, select 'Modify file header...'. &lt;/p&gt;&lt;p&gt;5. Click 'Patch Firmware' button.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="wordWrap">
              <bool>false</bool>
@@ -129,7 +129,7 @@
                </font>
               </property>
               <property name="text">
-               <string>Dest dir:   </string>
+               <string>Dest path:  </string>
               </property>
              </widget>
             </item>
@@ -141,7 +141,7 @@
                </font>
               </property>
               <property name="text">
-               <string notr="true">../hacked-SYSTEM.VSB</string>
+               <string notr="true">..</string>
               </property>
              </widget>
             </item>
