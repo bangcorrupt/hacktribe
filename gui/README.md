@@ -10,7 +10,7 @@ Move to `gui` directory:
 
     cd hacktribe/gui
 
-Install depencies:
+Install dependencies:
 
     pip install -r requirements.txt
 
