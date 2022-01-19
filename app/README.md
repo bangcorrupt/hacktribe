@@ -1,4 +1,4 @@
-# Hacktribe App
+# Hacktribe Editor
 
 An editor app for Hacktribe
 
@@ -14,17 +14,17 @@ Clone hacktribe dev branch:
 
     git clone -b dev https://github.com/bangcorrupt/hacktribe.git
 
-Move to `gui` directory:
+Move to `app` directory:
 
-    cd hacktribe/gui
+    cd hacktribe/app
 
 Install dependencies:
 
     pip install -r requirements.txt
 
-Run `hacktribe_app.py`:
+Run `hacktribe_app_gui.py`:
 
-    python hacktribe_app.py
+    python hacktribe_app_gui.py
 
 Follow the instructions in the app, pay attention to the log output in the text box.
 
