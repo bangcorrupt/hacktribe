@@ -10,7 +10,9 @@ class E2Firmware:
     def __init__(self, data):        
         self.data = data
         
-        # Check hash for known versions
+        # ADD - Check hash for known versions
+        # ADD - Separate header and app
+        # ADD - self.hash parameter
 
     # Applies patch to firmware data, modifying in place
     # p is patch as bytes
@@ -36,6 +38,7 @@ class E2Firmware:
             return False
 
 
+    
     # Get sha256 hash of bytes
     # byt is bytes to be hashed
     def get_digest(self, byt):
