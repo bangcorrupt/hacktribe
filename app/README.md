@@ -1,6 +1,6 @@
 # Hacktribe Editor
 
-An editor app for Hacktribe
+An editor app for hacktribe
 
 ## Features
  - GUI
