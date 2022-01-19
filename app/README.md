@@ -1,4 +1,12 @@
-# hacktribe-gui
+# Hacktribe App
+
+An editor app for Hacktribe
+
+## Features
+ - GUI
+ - Patch firmware
+
+<br/>
 
 To test:
 
