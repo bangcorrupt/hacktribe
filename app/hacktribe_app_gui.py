@@ -1,16 +1,24 @@
 from hacktribe_gui_autogen import *
 from hacktribe_app_backend import *
+from hacktribe_app_log import *
 from e2_firmware import *
 
 import sys
 from pathlib import Path
+import logging
 
 def main():
+    # Initialise logging
+    HacktribeAppLog()
+    
+    # Run App GUI
     a = HacktribeAppGUI()
 
 class HacktribeAppGUI:
-
     def __init__(self):
+        
+        
+        logging.debug('Initialising App')
         
         # Initialise backend
         self.be = HacktribeAppBackend()
@@ -20,6 +28,8 @@ class HacktribeAppGUI:
 
 
     def init_gui(self):
+        logging.debug('Initialising GUI')
+        
         self.app = QtWidgets.QApplication(sys.argv)
         self.MainWindow = QtWidgets.QMainWindow()
         self.ui = Ui_MainWindow()
@@ -39,10 +49,13 @@ class HacktribeAppGUI:
         self.ui.check_prefix_filename.clicked.connect(self.select_prefix_filename)
         self.ui.patch_firmware.clicked.connect(self.click_patch_firmware)
         
-        self.MainWindow.show()
+        # Initialise GUI log display
+        self.gui_log = QTextEditLogger(self.ui)
+        logging.getLogger().addHandler(self.gui_log)
+        self.gui_log.setLevel(logging.INFO)
         
-        #self.ui.log_text.append('\nHacktribe Editor\n')
-        #self.ui.log_text.append('https://github.com/bangcorrupt/hacktribe\n')
+        self.MainWindow.show()
+        self.be.welcome_msg()
         
         sys.exit(self.app.exec())
 
@@ -78,6 +91,16 @@ class HacktribeAppGUI:
     def click_patch_firmware(self):        
         self.be.apply_firmware_patch()
         
+
+class QTextEditLogger(logging.Handler):
+    def __init__(self, parent):
+        super().__init__()
+        self.widget = parent.log_text
+        self.widget.setReadOnly(True)
+
+    def emit(self, record):
+        msg = self.format(record)
+        self.widget.append(msg)
 
 if __name__ == "__main__":
     main()

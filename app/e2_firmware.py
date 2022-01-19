@@ -1,5 +1,12 @@
 import bsdiff4
 import hashlib
+import logging
+
+
+def main():
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+    b = bytes(0x100)
+    fw = E2Firmware(b)
 
 # E2 Firmware class
 # data is bytearray of firmware update file (including header)

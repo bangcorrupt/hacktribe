@@ -5,3 +5,4 @@ __pycache__
 *.bin*
 *patch.sh
 *.geany
+*.log
