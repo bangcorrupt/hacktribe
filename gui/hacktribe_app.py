@@ -81,31 +81,49 @@ class HacktribeApp:
 
 
     def apply_firmware_patch(self):        
+        
         # Open firmware file
-        with open(self.src_path, 'rb') as f:
-            src = bytearray(f.read())
+        if self.src_path.is_file():
+            with open(self.src_path, 'rb') as f:
+                src = bytearray(f.read())
+        else:
+            #  ADD - Error dialog box
+            self.ui.log_text.append('File not found: ' + str(self.src_path))
+            self.ui.log_text.append('ERROR: Source file not found\n')
+            return
         
         # Instantiate firmware object
         fw = E2Firmware(src)
         
         
         # Get source hash string
-        with open(self.src_hash_path, 'r') as f:
-            source_hash = f.readlines()[0].split()[0]
+        if self.src_hash_path.is_file():
+            with open(self.src_hash_path, 'r') as f:
+                source_hash = f.readlines()[0].split()[0]
+        else:
+            #  ADD - Error dialog box
+            self.ui.log_text.append('File not found: ' + str(self.src_hash_path))
+            self.ui.log_text.append('ERROR: Source file hash not found\n')
+            return
         
         # Check source file hash        
         if not fw.check_hash(source_hash):
             self.ui.log_text.append('ERROR: Incorrect source file.')
-            self.ui.log_text.append('Electribe 2 Sampler firmware version 2.02 only.')
-            self.ui.log_text.append('-------------------------------------------------')
+            self.ui.log_text.append('Electribe 2 Sampler firmware version 2.02 only\n.')
             return
         else:
             self.ui.log_text.append('Electribe 2 Sampler firmware version 2.02 found.\n')
                 
         
         # Open patch file
-        with open(self.patch_path, 'rb') as f:
-            p = f.read()
+        if self.patch_path.is_file():
+            with open(self.patch_path, 'rb') as f:
+                p = f.read()
+        else:
+            #  ADD - Error dialog box
+            self.ui.log_text.append('File not found: ' + str(self.patch_path))
+            self.ui.log_text.append('ERROR: Patch file not found\n')
+            return
         
         # Apply patch and check hash
         self.ui.log_text.append('Applying patch...\n')
@@ -120,9 +138,15 @@ class HacktribeApp:
         else:
             self.targ_hash_path = self.root_path / 'hash/hacked-SYSTEM.VSB.sha'
         
-         # Get target hash string
-        with open(self.targ_hash_path, 'r') as f:
-            target_hash = f.readlines()[0].split()[0]       
+        # Get target hash string
+        if self.targ_hash_path.is_file():
+            with open(self.targ_hash_path, 'r') as f:
+                target_hash = f.readlines()[0].split()[0]   
+        else:
+            # ADD - Error dialog box
+            self.ui.log_text.append('File not found: ' + str(self.targ_hash_path))
+            self.ui.log_text.append('ERROR: Target hash file hash not found\n')
+            return
         
         
         # Check hash
@@ -136,7 +160,9 @@ class HacktribeApp:
             
             dest = self.dest_path / dest_file
             # Save patched firmware to destination path
-            self.ui.log_text.append('Saving patched firmware to ' +str(dest)+ '\n')
+            self.ui.log_text.append('Saving patched firmware to ' + str(dest) + '\n')
+            
+            # ADD - Warn before overwrite
             with open(dest, 'wb') as f:
                 f.write(fw.data)
             
