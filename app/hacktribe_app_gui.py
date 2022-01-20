@@ -1,7 +1,7 @@
 from hacktribe_gui_autogen import *
 from hacktribe_app_backend import *
 from hacktribe_app_log import *
-from e2_firmware import *
+
 
 import sys
 from pathlib import Path

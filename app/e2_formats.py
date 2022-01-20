@@ -31,6 +31,30 @@ system_vsb = Struct('head' / vsb_header,
                     'body' / system
                    )
 
-groove = Struct('data' / Bytes(0x140))
+
+groove_step = Struct('trigger' / Default(Int8ul, 0),
+                     'velocity' / Default(Int8ul, 96),
+                     'gate' / Default(Int8ul, 96),
+                     'null' / Default(Hex(Int8ul), 0xff)
+                    )
 
 
+groove_template = Struct('start_label' / Default(PaddedString(0x10, 'ascii'), 'GVST'),
+                         'name' / Default(PaddedString(0xf, 'ascii'), 'Init Groove'),
+                         Padding(1),
+                         Seek(0x22),
+                         'length' / Default(Int8ul, 64),
+                         Padding(1, pattern=b'\xff'),
+                         'step' / groove_step,
+                         Seek(0x13c),
+                         'end_label' / Default(PaddedString(0x4, 'ascii'), 'GVED')
+                        )
+
+
+gv = groove_template.build(dict())
+
+seq = [groove_step.build(dict())] * 64
+
+print(len(seq))
+
+#print(groove_template.parse(step=seq))
