@@ -30,3 +30,7 @@ system = Struct('data' / Bytes(0x200000)
 system_vsb = Struct('head' / vsb_header,
                     'body' / system
                    )
+
+groove = Struct('data' / Bytes(0x140))
+
+
