@@ -35,9 +35,9 @@ class HacktribeAppGUI:
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.MainWindow)
         
-        self.ui.edit_src_path.setText(str(self.be.src_path))
-        self.ui.edit_patch_path.setText(str(self.be.patch_path))
-        self.ui.edit_dest_path.setText(str(self.be.dest_path))
+        self.ui.edit_src_path.setText(str(self.be.fw_patcher.src_path))
+        self.ui.edit_patch_path.setText(str(self.be.fw_patcher.patch_path))
+        self.ui.edit_dest_path.setText(str(self.be.fw_patcher.dest_path))
         
         self.ui.browse_src_path.clicked.connect(self.select_src_path)
         self.ui.edit_src_path.textChanged.connect(self.edit_src_path)
@@ -65,33 +65,34 @@ class HacktribeAppGUI:
         self.ui.edit_src_path.setText(path)
 
     def edit_src_path(self):
-        self.be.src_path = Path(self.ui.edit_src_path.text())
+        self.be.fw_patcher.src_path = Path(self.ui.edit_src_path.text())
     
     def select_patch_path(self):
         path = QtWidgets.QFileDialog.getOpenFileName()[0]
         self.ui.edit_patch_path.setText(path)
 
     def edit_patch_path(self):
-        self.be.patch_path = Path(self.ui.edit_patch_path.text())
+        self.be.fw_patcher.patch_path = Path(self.ui.edit_patch_path.text())
    
     def select_dest_path(self):
         path = QtWidgets.QFileDialog.getExistingDirectory()
         self.ui.edit_dest_path.setText(path)
 
     def edit_dest_path(self):
-        self.be.dest_path = Path(self.ui.edit_dest_path.text())
+        self.be.fw_patcher.dest_path = Path(self.ui.edit_dest_path.text())
 
     def select_edit_header(self):
-        self.be.edit_header = self.ui.check_edit_header.isChecked()
+        self.be.fw_patcher.edit_header = self.ui.check_edit_header.isChecked()
 
     def select_prefix_filename(self):
-        self.be.prefix_filename = self.ui.check_prefix_filename.isChecked()
+        self.be.fw_patcher.prefix_filename = self.ui.check_prefix_filename.isChecked()
 
 
     def click_patch_firmware(self):        
-        self.be.apply_firmware_patch()
-        
+        self.be.fw_patcher.apply_patch()
 
+        
+# Logging handler for GUI log_text
 class QTextEditLogger(logging.Handler):
     def __init__(self, parent):
         super().__init__()
