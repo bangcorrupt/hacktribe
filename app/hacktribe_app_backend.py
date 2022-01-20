@@ -1,4 +1,3 @@
-from e2_firmware import E2Firmware
 from firmware_patcher import FirmwarePatcher
 
 from pathlib import Path

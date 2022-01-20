@@ -1,4 +1,3 @@
-from e2_firmware import E2Firmware
 import e2_formats as fmt
 
 from pathlib import Path
