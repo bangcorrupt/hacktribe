@@ -1,0 +1,24 @@
+DEBUG: Initialising App
+DEBUG: Initialising Backend
+DEBUG: Initialising GUI
+DEBUG: Display welcome message
+INFO: Hacktribe Editor
+
+INFO: https://github.com/bangcorrupt/hacktribe
+
+DEBUG: Apply firmware patch
+ERROR: File not found: ..\SYSTEM.VSB
+WARNING: Source file not found
+
+DEBUG: Apply firmware patch
+ERROR: File not found: ..\SYSTEM.VSB
+WARNING: Source file not found
+
+DEBUG: Apply firmware patch
+ERROR: File not found: ..\SYSTEM.VSB
+WARNING: Source file not found
+
+DEBUG: Apply firmware patch
+ERROR: File not found: ..\SYSTEM.VSB
+WARNING: Source file not found
+
