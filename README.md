@@ -40,9 +40,13 @@ My sincerest gratitude to all who have chosen to do so:
 
 [BKLronin](https://github.com/BKLronin)
 
+[juanjo1138](https://github.com/juanjo1138)
+
 [ptowns](https://github.com/ptowns)
 
 [richardarnezjames](https://github.com/richardarnezjames)
+
+
 
 See [How to support hacktribe](https://github.com/bangcorrupt/hacktribe/discussions/63) for more details.
 
