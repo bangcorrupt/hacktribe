@@ -46,6 +46,8 @@ My sincerest gratitude to all who have chosen to do so:
 
 [richardarnezjames](https://github.com/richardarnezjames)
 
+[asyncron-os](https://github.com/asyncron-os)
+
 
 
 See [How to support hacktribe](https://github.com/bangcorrupt/hacktribe/discussions/63) for more details.
