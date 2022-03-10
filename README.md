@@ -32,7 +32,7 @@ If you want to support this project financially, you are most welcome to [become
 
 My sincerest gratitude to all who have chosen to do so:
 
-[BKLronin](https://github.com/BKLronin), [maks](https://github.com/maks), [AndrewSosna](https://github.com/AndrewSosna), [tiberiuichim](https://github.com/tiberiuichim),  [juanjo1138](https://github.com/juanjo1138),[woeps](https://github.com/woeps), [ptowns](https://github.com/ptowns), [richardarnezjames](https://github.com/richardarnezjames), [asyncron-os](https://github.com/asyncron-os)
+[BKLronin](https://github.com/BKLronin), [maks](https://github.com/maks), [AndrewSosna](https://github.com/AndrewSosna), [tiberiuichim](https://github.com/tiberiuichim),  [juanjo1138](https://github.com/juanjo1138), [woeps](https://github.com/woeps), [ptowns](https://github.com/ptowns), [richardarnezjames](https://github.com/richardarnezjames), [asyncron-os](https://github.com/asyncron-os)
 
 
 
