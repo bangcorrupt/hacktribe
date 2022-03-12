@@ -1,4 +1,5 @@
 __pycache__
+build
 *.VSB
 *.e2pat*
 *.e2spat*
@@ -6,3 +7,5 @@ __pycache__
 *patch.sh
 *.geany
 *.log
+*.o
+*.elf
