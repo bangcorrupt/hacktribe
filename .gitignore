@@ -1,6 +1,14 @@
+__pycache__
+build
+hack
 *.VSB
-*.e2pat*
-*.e2spat*
-*.bin*
+*.e2pat
+*.e2spat
+*.bin
 *patch.sh
 *.geany
+*.log
+*.o
+*.elf
+*.hxt
+.*
