@@ -10,9 +10,9 @@ An editor app for hacktribe
 
 To test:
 
-Clone hacktribe dev branch:
+Clone hacktribe:
 
-    git clone -b dev https://github.com/bangcorrupt/hacktribe.git
+    git clone https://github.com/bangcorrupt/hacktribe.git
 
 Move to `app` directory:
 
