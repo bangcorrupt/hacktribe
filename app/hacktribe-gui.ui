@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>511</width>
+    <height>786</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Hacktribe</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="patch_tab">
+       <attribute name="title">
+        <string>Patch</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>256</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;1. Select source file. This must be Electribe 2 &lt;span style=&quot; font-weight:600;&quot;&gt;Sampler&lt;/span&gt; firmware version &lt;span style=&quot; font-weight:600;&quot;&gt;2.02&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;2. Select patch file. This must be 'hacktribe-2.patch' from the hacktribe repo&lt;/p&gt;&lt;p&gt;3. Select destination path. This is where the patched firmware will be saved.&lt;/p&gt;&lt;p&gt;4. If installing to synth hardware for the first time, select 'Modify file header...'. &lt;/p&gt;&lt;p&gt;5. Click 'Patch Firmware' button.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QLabel" name="label_src_path">
+              <property name="font">
+               <font>
+                <family>Monospace</family>
+               </font>
+              </property>
+              <property name="text">
+               <string>Source file:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="edit_src_path">
+              <property name="font">
+               <font>
+                <family>Monospace</family>
+               </font>
+              </property>
+              <property name="text">
+               <string notr="true">../SYSTEM.VSB</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="browse_src_path">
+              <property name="text">
+               <string>Browse...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_patch_path">
+              <property name="font">
+               <font>
+                <family>Monospace</family>
+               </font>
+              </property>
+              <property name="text">
+               <string>Patch file: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="edit_patch_path">
+              <property name="font">
+               <font>
+                <family>Monospace</family>
+               </font>
+              </property>
+              <property name="text">
+               <string notr="true">../patch/hacktribe-2.patch</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="browse_patch_path">
+              <property name="text">
+               <string>Browse...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="label_dest_path">
+              <property name="font">
+               <font>
+                <family>Monospace</family>
+               </font>
+              </property>
+              <property name="text">
+               <string>Dest path:  </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="edit_dest_path">
+              <property name="font">
+               <font>
+                <family>Monospace</family>
+               </font>
+              </property>
+              <property name="text">
+               <string notr="true">..</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="browse_dest_path">
+              <property name="text">
+               <string>Browse...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="check_edit_header">
+            <property name="text">
+             <string>Modify file header for synth hardware</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="check_prefix_filename">
+            <property name="text">
+             <string>Prefix destination filename</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="patch_firmware">
+            <property name="text">
+             <string>Patch Firmware</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextEdit" name="log_text">
+            <property name="font">
+             <font>
+              <family>Monospace</family>
+             </font>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>511</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionExit_2"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionExit_2">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
