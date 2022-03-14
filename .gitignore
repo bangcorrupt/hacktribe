@@ -2,11 +2,11 @@ __pycache__
 build
 hack
 *.VSB
-*.e2pat*
-*.e2spat*
+*.e2pat
+*.e2spat
 *.bin*
 *patch.sh
 *.geany
 *.log
 *.o
-*.elf
+.*
