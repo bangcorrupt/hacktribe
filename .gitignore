@@ -1,5 +1,6 @@
 __pycache__
 build
+hack
 *.VSB
 *.e2pat*
 *.e2spat*
