@@ -7,10 +7,11 @@ Electribe 2 hacks, based on sampler firmware version 2.02.
 - Oscillators
 - More IFX, grooves, scales
 - Import/Export IFX, grooves
+- Expanded MIDI implementation
 - Custom init pattern
 - Supports synth and sampler hardware
 
-See [demo video](https://www.youtube.com/watch?v=n0wXUqgfa9Q) by [Thomas Herrmann](https://github.com/BKLronin).
+See a list of [demo videos](https://github.com/bangcorrupt/hacktribe/wiki/Features#demo-videos) in the [wiki](https://github.com/bangcorrupt/hacktribe/wiki).
 
 ## How To
 See **[Firmware Patch](../../wiki/how-to#firmware-patch)**.
