@@ -1,26 +1,18 @@
 #!/bin/bash
 
-# Hacktribe firmware patch interactive tutorial
+# Hacktribe firmware patch tutorial
 #
 # See https://github.com/bangcorrupt/hacktribe for details.
 
 # This tutorial will help you learn how to run a few bash commands and a python script.
 # For best results, read everything, 
 # run each command separately and pay attention to the output.
-# 
-# You can use a terminal on your local Linux machine, 
-# or, on replit.com click 'Shell' (next to 'Console', either below or to the right)
-# to access a shell here in your browser.
-#
-# If you're viewing this on replit.com and just want to see the end result, 
-# click [>Run] at top of the screen to run all the commands automatically.
-# Read the output in the 'Console' and check the files on the left.
 #
 # Anything starting with a '#' character is a comment and ignored by the shell 
 # (you don't need to type these).  
 # We can use comments to disable a command (see line 66 below).
 #
-# If you're running this on your local machine, you will need to install git, python and pip.
+# You will need to install git, python and pip.
 #
 # Happy hacking!
 
@@ -65,16 +57,8 @@ python scripts/e2-firmware-patch.py -e
 # OR: Run the firmware patching script for sampler/hacktribe, no flags necessary:
 # python scripts/e2-firmware-patch.py
 
-# Everything is done now, the rest is just moving files and tidying up.
+# If the patching was successful, you should see 'Firmware patched successfully' in the outout from the script.  
 
-# Move up one directory:
-cd ..
-
-# Move the patched firmware to our current directory:
-mv hacktribe/hacked-SYSTEM.VSB .
-
-# If you're running this on replit.com,
-# now is a good time to download any files you want to keep.
-# <-- Check the 'Files' pane on the left.
+# Copy 'hacked-SYSTEM.VSB' to the 'System' directory on the SD card, rename it to 'SYSTEM.VSB' and run the firmware update funtion on the device.
 
 # See https://github.com/bangcorrupt/hacktribe/discussions/41 if you are having difficulties
