@@ -58,23 +58,23 @@ python scripts/e2-firmware-patch.py -e
 # python scripts/e2-firmware-patch.py
 
 # If the patching was successful, 
-# you should see 'Firmware patched successfully' in the outout from the script.  
+# you should see 'Firmware patched successfully' in the output from the script.  
 
 # Copy 'hacked-SYSTEM.VSB' to the 'System' directory on the SD card, 
 # rename it to 'SYSTEM.VSB' and run the firmware update function on the device.
 
 # Everything is done nowm the rest is just tidying up.
 
-# Move hacked-SYSTEM.VSB to parent directory
+# Move hacked-SYSTEM.VSB to parent directory:
 
-mv hacked-SYSTEM.VSB ..
+# mv hacked-SYSTEM.VSB ..
 
-# Change directory to parent directory
+# Change directory to parent directory:
 
-cd ..
+# cd ..
 
-# Delete all the files we downloaded
+# Delete all the files we downloaded:
 
-rm -rf hacktribe
+# rm -rf hacktribe
 
 # See https://github.com/bangcorrupt/hacktribe/discussions/41 if you are having difficulties
