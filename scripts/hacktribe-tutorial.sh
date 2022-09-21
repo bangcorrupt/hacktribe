@@ -69,6 +69,10 @@ python scripts/e2-firmware-patch.py -e
 
 mv hacked-SYSTEM.VSB ..
 
+# Change directory to parent directory
+
+cd ..
+
 # Delete all the files we downloaded
 
 rm -rf hacktribe
