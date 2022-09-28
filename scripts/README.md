@@ -17,7 +17,7 @@ e2pat2all.py - Create allpatterns from a single pattern.
 
 e2ev.py - Split event recording by pattern, create stems, mute parts, extract and replace patterns.
 
-e2sysex.py - Communicate with electribe 2 via SysEx
+e2sysex.py - Communicate with electribe 2 via SysEx.  Depends on https://github.com/bangcorrupt/mido and https://github.com/bangcorrupt/python-rtmidi
 
 e2-header.py - Edit file header to load sampler firmware on synth hardware
 
