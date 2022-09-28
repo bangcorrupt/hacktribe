@@ -202,13 +202,10 @@ class E2Sysex:
 
   
     def sysex_response(self):
-        if self.midi is not None:
-            response = self.midi.sysex_response
-        else:
-            for msg in self.inport:
-                if msg.type == 'sysex':
-                    response = msg.bytes()
-                    break
+        for msg in self.inport:
+            if msg.type == 'sysex':
+                response = msg.bytes()
+                break
         
         return response
     
