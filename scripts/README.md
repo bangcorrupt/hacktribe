@@ -2,9 +2,6 @@
 
 Scripts for dealing with electribe2 files.
 
-Support:
-http://www.korgforums.com/forum/phpBB2/viewtopic.php?p=769727#769727
-
 e2all2pat.py  - Converts allpat file to a directory of e2pat files.  
 
 e2pat2syx.py - Converts a pattern file in e2pat format to a pattern file in sysex format.
