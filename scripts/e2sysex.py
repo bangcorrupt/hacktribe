@@ -18,19 +18,26 @@ def main():
 
 
 class E2Sysex:
-    def __init__(self):
+    def __init__(self, midi=None):
+        
+        if midi is not None:
+            self.inport = midi.inport
+            self.outport = midi.outport
+            self.global_channel  = midi.global_channel
+            self.id = midi.id
+            self.version = midi.version
 
-        self.inport = mido.open_input('electribe2 sampler electribe2 s')
-        self.outport = mido.open_output('electribe2 sampler electribe2 s')
+        else:
+            self.inport = mido.open_input('electribe2 sampler electribe2 s')
+            self.outport = mido.open_output('electribe2 sampler electribe2 s')
 
-        self.global_channel, self.id, self.version = self.search_device()
+            self.global_channel, self.id, self.version = self.search_device()
+   
+            logging.info('Found electribe')
+            logging.info('Global channel ' + str(self.global_channel))
+            logging.info('Firmware version ' + self.version)
         
         self.sysex_head = [0x42, 0x30 + self.global_channel, 0x00, 0x01, self.id]
-    
-        logging.info('Found electribe')
-        logging.info('Global channel ' + str(self.global_channel))
-        logging.info('Firmware version ' + self.version)
-
  
     def search_device(self):
         

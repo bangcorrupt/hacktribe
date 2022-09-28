@@ -52,19 +52,19 @@ groove_template = Struct('start_label' / Default(PaddedString(0x10, 'ascii'), 'G
 
 
 # FX preset
-fx_control = Struct('source_control' / Default(Enum(Byte, FX_On=0x41, 
-                                                          FX_Edit_X=0x42, 
-                                                          FX_Edit_Y=0x43, 
-                                                          FX_Edit_X_Hi=0x44, 
-                                                          FX_Edit_X_Lo=0x45, 
-                                                          FX_Edit_Y_Hi=0x46, 
-                                                          FX_Edit_Y_Lo=0x47, 
+fx_control = Struct('source_control' / Default(Enum(Byte, FX_On=0x41,
+                                                          FX_Edit_X=0x42,
+                                                          FX_Edit_Y=0x43,
+                                                          FX_Edit_X_Hi=0x44,
+                                                          FX_Edit_X_Lo=0x45,
+                                                          FX_Edit_Y_Hi=0x46,
+                                                          FX_Edit_Y_Lo=0x47,
                                                           Press_Play=0x4a),  0x42),
                     'chain_index' / Default(Enum(Byte, IFX_1=0x00,
                                                        IFX_2=0x01,
                                                        MFX=0x02,
-                                                       Bypass_Tails=0x07,
-                                                       Bypass_Mute=0x0a), 0x00),
+                                                       Input_Level=0x07,
+                                                       Output_Level=0x0a), 0x00),
                     'dest_param' / Default(Int8ul, 0x00),
                     Padding(1),
                     'min_value' / Default(Int8ul, 0x00),
@@ -1308,16 +1308,3 @@ fx_preset = Struct(Seek(0x01),
                     'mfx_device' / mfx_device, Seek(0x1c9),
                     'mfx_params' / mfx_params, Seek(0x209), Padding(3),
                     )
-
-#fx_preset.build({})
-print(fx_preset.parse(fx_preset.build({"ifx_1_device":'I_eq_2_band', "ifx_2_device":'I_eq_2_band'})))
-
-
-
-with open('FX-Presets/IFX-Preset_12_Exciter.bin', 'rb') as f:
-    fx = bytearray(f.read())
-
-print(fx_preset.parse(fx))
-
-print(hex(len(fx_preset.build({"ifx_1_device":'I_eq_2_band', "ifx_2_device":'I_eq_2_band'}))))
-
