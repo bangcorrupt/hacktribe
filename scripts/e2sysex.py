@@ -19,24 +19,23 @@ def main():
 
 class E2Sysex:
     def __init__(self, midi=None):
-        
-        if midi is not None:
-            self.inport = midi.inport
-            self.outport = midi.outport
-            self.global_channel  = midi.global_channel
-            self.id = midi.id
-            self.version = midi.version
+        logging.debug('Initialise SysEx')
+        self.midi = midi
+        if self.midi is not None:
+
+            self.inport = self.midi.inport
+            self.outport = self.midi.outport
 
         else:
             self.inport = mido.open_input('electribe2 sampler electribe2 s')
             self.outport = mido.open_output('electribe2 sampler electribe2 s')
 
-            self.global_channel, self.id, self.version = self.search_device()
+        self.global_channel, self.id, self.version = self.search_device()
    
-            logging.info('Found electribe')
-            logging.info('Global channel ' + str(self.global_channel))
-            logging.info('Firmware version ' + self.version)
-        
+        logging.info('Found electribe')
+        logging.info('Global channel ' + str(self.global_channel))
+        logging.info('Firmware version ' + self.version)
+    
         self.sysex_head = [0x42, 0x30 + self.global_channel, 0x00, 0x01, self.id]
  
     def search_device(self):
@@ -203,11 +202,13 @@ class E2Sysex:
 
   
     def sysex_response(self):
-        
-        for msg in self.inport:
-            if msg.type == 'sysex':
-                response = msg.bytes()
-                break
+        if self.midi is not None:
+            response = self.midi.sysex_response
+        else:
+            for msg in self.inport:
+                if msg.type == 'sysex':
+                    response = msg.bytes()
+                    break
         
         return response
     
