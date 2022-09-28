@@ -9,6 +9,7 @@ from e2syx2pat import syx_to_pat
 from e2_syx_codec import syx_enc
 from e2_syx_codec import syx_dec
 
+from time import sleep
 
 def main():
     logging.basicConfig(level=logging.DEBUG)
@@ -16,9 +17,9 @@ def main():
     e = E2Sysex()
 
 
-
 class E2Sysex:
     def __init__(self):
+
         self.inport = mido.open_input('electribe2 sampler electribe2 s')
         self.outport = mido.open_output('electribe2 sampler electribe2 s')
 
@@ -56,13 +57,12 @@ class E2Sysex:
     # source is pattern number
     # returns pattern as sysex bytes
     def get_pattern(self, source):
-        
+        logging.debug('Called get_pattern')
         msg =  Message('sysex', data=self.sysex_head + 
                                      [0x1C] + 
                                      self.int_to_midi(source))
 
         self.outport.send(msg)
-
         response = self.sysex_response()
         
         if response[6] == 0x24:
@@ -75,7 +75,7 @@ class E2Sysex:
             data = response [9:-1]
 
 
-            return bytes(data)
+            return data
 
     
     # send pattern to device
@@ -83,18 +83,18 @@ class E2Sysex:
     # dest is pattern number (0-249)
     # returns SysEx response code
     def set_pattern(self, dest, pattern):
-
+        logging.debug('Called set_pattern')
         
         msg =  Message('sysex', data=self.sysex_head + 
                                      [0x4C] + 
                                      self.int_to_midi(dest) + 
                                      pattern)
 
-        #self.port.send(msg)        
-        #response = self.sysex_response()
+        logging.debug('Sending pattern')
+        self.outport.send(msg)        
         
-        # long sysex messages fail
-        response = self.workaround_long_sysex(msg)
+        response = self.sysex_response()
+        logging.debug('Sysex response: ' + str([hex(r) for r in response]))
 
         if response[6] == 0x24:
             logging.warning('DATA LOAD ERROR: Pattern dump unsuccessful')
@@ -134,12 +134,10 @@ class E2Sysex:
         msg =  Message('sysex', data=self.sysex_head + 
                                      [0x40] + 
                                      pattern)
+
+        self.outport.send(msg)
+        response = self.sysex_response()
         
-        # long sysex messages fail
-        response = self.workaround_long_sysex(msg)
-        
-        # self.port.send(msg)
-        # response = self.sysex_response()
         
         if response[6] == 0x24:
             logging.warning('DATA LOAD ERROR: Current Pattern dump unsuccessful')
@@ -160,18 +158,15 @@ class E2Sysex:
     # get all patterns from device
     # returns list of pattern files as sysex bytes
     def get_all_patterns(self):
-        
         return [self.get_pattern(i) for i in range(250)]
         
 
-   
     # helper function, uses set_pattern    
     # sends all patterns to device
     # patterns is list of patterns as sysex bytes
     def set_all_patterns(self, patterns):
         logging.info('SET ALL PATTERNS: Not implemented yet')
     
-
 
     # get global settings
     # returns settings as sysex bytes
@@ -199,7 +194,6 @@ class E2Sysex:
     def set_global(self, settings):
         logging.info('SET GLOBAL DATA: Not implemented yet')
 
-
   
     def sysex_response(self):
         
@@ -215,24 +209,7 @@ class E2Sysex:
     # returns little endian list of 7-bit bytes
     def int_to_midi(self, x):
         return [ x%128, x//128 ]
-        
- 
-    # FIX - find a proper solution
-    # ? can't send long sysex messages via ?mido/rtmidi?
-    #   alsa midi output buffer overrun?
-    # works using amidi, but is very slow
-    def workaround_long_sysex(self, msg):
-        
-        logging.info('Working around long sysex bug')
 
-        self.outport.close()        
-        run(["amidi", "-p", "hw:1", "-S", msg.hex()])
-        
-        response = self.sysex_response()
-        
-        self.outport = mido.open_output('electribe2 sampler electribe2 s')
-
-        return response
         
 
     # val is list of sysex bytes
@@ -244,15 +221,6 @@ class E2Sysex:
 
         return response
 
-
-    # val is list of sysex bytes
-    def test_long_sysex_message(self, val):
-
-        msg =  Message('sysex', data=self.sysex_head+val)
-        self.workaround_long_sysex(msg)
-        response = self.sysex_response()
-
-        return response
 
     
     # Read CPU RAM at address for length bytes
@@ -278,7 +246,7 @@ class E2Sysex:
     # Write data to CPU RAM at address
     # data is byte list
     def write_cpu_ram(self, address, data):
-        
+        logging.debug('Called write_cpu_ram')
         # First, set write address and length
         # Encode values as sysex
         addr = address.to_bytes(4, byteorder='little')
@@ -287,8 +255,10 @@ class E2Sysex:
         
         # Send first message
         msg =  Message('sysex', data=self.sysex_head+[0x53]+syx_al)
+        logging.debug('Send addres+length')
         self.outport.send(msg)
         response = self.sysex_response()
+        logging.debug('Sysex response: ' + str([hex(r) for r in response]))
         # Ignore response for now
         # UPDATE - test for success
         
@@ -299,11 +269,11 @@ class E2Sysex:
         # Send final message
         msg =  Message('sysex', data=self.sysex_head+[0x54]+syx_dat)
         
-        if len(msg) > 0x200:
-            response = self.workaround_long_sysex(msg)
-        else:
-            self.outport.send(msg)
-            response = self.sysex_response()
+        logging.debug('Sending data')
+        self.outport.send(msg)
+        
+        response = self.sysex_response()
+        logging.debug('Sysex response: ' + str([hex(r) for r in response]))
         
         return response
         
@@ -334,6 +304,7 @@ class E2Sysex:
     # Uses write_cpu_ram for now
     # UPDATE - Add firmware hack for specific sysex function
     def set_ifx(self, ifx_idx, ifx):
+        logging.debug('Called set_ifx')
         
         if ifx_idx > 99 or ifx_idx < 0:
             logging.warning('IFX index out of range - must be >= 0 & < 100.')
@@ -352,9 +323,9 @@ class E2Sysex:
         ifx_b = ifx[0x100:]
         self.write_cpu_ram(ifx_addr+0x100, ifx_b)
         
-        return
+        return  
         
-    
+        
     # Add new IFX preset, increasing total count
     # ifx is byte list
     def add_ifx(self, ifx):
@@ -426,7 +397,7 @@ class E2Sysex:
         
         # Write Groove template from CPU RAM
         self.write_cpu_ram(gv_addr, gv)
-        
+
         return
         
     

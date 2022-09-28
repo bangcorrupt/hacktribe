@@ -22,8 +22,8 @@ if os.path.exists(path):
     hak[0x2e] = 0x23
     
     # e2s
-    #hak[0x12] = 0x53
-    #hak[0x2e] = 0x24
+    hak[0x12] = 0x53
+    hak[0x2e] = 0x24
 
     with open(path, 'wb') as f:
         f.write(hak)
