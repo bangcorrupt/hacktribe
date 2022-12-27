@@ -5,7 +5,7 @@
 # This means, though, that all factory samples have to move to slots 501+.
 #
 # I wanted to keep my existing patterns, this kept me from installing HACKTRIBE - 
-# but now that I've done it 
+# but now that I've done it, I did not want to correct all existing patterns by hand
 
 import argparse
 
