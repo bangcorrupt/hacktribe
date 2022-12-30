@@ -52,10 +52,10 @@ pip install argparse bsdiff4
 # (If you already have a previous version of hacktribe installed, this is not necessary).
 #
 # EITHER: Run the firmware patching script for synth, using '-e' flag to modify header:
-python scripts/e2-firmware-patch.py -e
+#python scripts/e2-firmware-patch.py -e
 
 # OR: Run the firmware patching script for sampler/hacktribe, no flags necessary:
-# python scripts/e2-firmware-patch.py
+python scripts/e2-firmware-patch.py
 
 # If the patching was successful, 
 # you should see 'Firmware patched successfully' in the output from the script.  
