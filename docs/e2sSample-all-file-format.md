@@ -22,36 +22,37 @@ The specification for Windows WAV files is called RIFF WAVE. If you start lookin
 
 The structure of the first RIFF block in memory is this: 
 
-0x00001000 "RIFF" Beginning of first RIFF file
-0x00001004 32bit RIFF Chunk length (+0x08 for correct pointer)
-0x00001008 "WAVE" IDs type of RIFF file
--- Subchunk 1: Format data
+- **RIFF Container Chunk**
+-- 0x00001000 "RIFF" Beginning of first RIFF file
+-- 0x00001004 32bit RIFF Chunk length (+0x08 for correct pointer)
+-- 0x00001008 "WAVE" IDs type of RIFF file
+- **Subchunk 1: Format data**
 This subchunk has a fixed length of 24 (0x18) bytes.
-0x0000100C "fmt " Subchunk 1 - type
-0x00001010: 10 00 00 00 32bit Subchunk length from here (+x08 for header for total chunk length)
-0x00001014: 01 00 Sample format tag: 0001 = PCM
-0x00001016: 01 00 Number of channels: 0001 = mono
-0x00001018: 3A 7D 00 00 Sample rate: (0xBB80 = 48k)
-0x0000101C: 74 FA 00 00 Bytes per second 
-0x00001020: Block Align
-0x00001022: Bits per sample 
--- Subchunk 2: Sample data
-This subchunk is as long as the sample demands. Weird little detail: To find the end of the subchunk, you have to add 
-0x00001024: "data" Subchunk 2 - type
-0x00001028: xx xx xx xx 32bit length of the subchunk from here (+8 for header for total chunk length, +44 0x2C from start of RIFF file)
-0x0000102C: data block 
--- Subchunk 3: Korg Metadata
+-- 0x0000100C "fmt " Subchunk 1 - type
+-- 0x00001010: 10 00 00 00 32bit Subchunk length from here (+x08 for header for total chunk length)
+-- 0x00001014: 01 00 Sample format tag: 0001 = PCM
+-- 0x00001016: 01 00 Number of channels: 0001 = mono
+-- 0x00001018: 3A 7D 00 00 Sample rate: (0xBB80 = 48k)
+-- 0x0000101C: 74 FA 00 00 Bytes per second 
+-- 0x00001020: Block Align
+-- 0x00001022: Bits per sample 
+- **Subchunk 2: Sample data**
+This subchunk is as long as the sample demands. 
+-- 0x00001024: "data" Subchunk 2 - type
+-- 0x00001028: xx xx xx xx 32bit length of the subchunk from here (+8 for header for total chunk length, +44 0x2C from start of RIFF file)
+-- 0x0000102C: data block 
+- **Subchunk 3: Korg Metadata**
 This subchunk - which just contains sub-subchunk 3a - has a fixed length of 1188 bytes
-0000: "korg" 
-0004: 9C 04 00 00 (chunk length from here is 1180 bytes)
--- Subchunk 3a: Electribe List
+-- 0x000: "korg" 
+-- 0x004: 9C 04 00 00 (chunk length from here is 1180 bytes)
+- **Subchunk 3a: Electribe List**
 This sub-subchunk - containing the Electribe Sample metadata - has a fixed length of 1180 bytes. 
-0008: "esli" 
-000C: 94 04 00 00 (chunk length from here is 1172 bytes)
-0010: xx xx 16-bit Osc Slot (starting at zero, so e.g. slot 501 - the first slot for user samples - is 0x1F4)
-0012-0021: Name (16 chars, unused: 00)
-0022: xx xx 16-bit Category (0x0011 = User) 
-0024: Absolute Sample No (seems to be a running number incremented each time a sample is imported)
+-- 0x008: "esli" 
+-- 0x00C: 94 04 00 00 (chunk length from here is 1172 bytes)
+-- 0x010: xx xx 16-bit Osc Slot (starting at zero, so e.g. slot 501 - the first slot for user samples - is 0x1F4)
+-- 0x012-0021: Name (16 chars, unused: 00)
+-- 0x022: xx xx 16-bit Category (0x0011 = User) 
+-- 0x024: Absolute Sample No (seems to be a running number incremented each time a sample is imported)
 This is all we need for reordering the samples - more details can be found [in this document on Github](https://gist.github.com/jack126guy/b2d38db0c96ca247ae1ad385e011fd78)  pulled from reverse-engineering the free editors [Oe2SLE](https://github.com/JonathanTaquet/Oe2sSLE)(Python-based), and [e2sedit](http://flosaic.com/e2sEdit/)
 ----
 The end of the subchunks 3/3a is also the end of the RIFF WAF block. The next block starts immediately after that.
