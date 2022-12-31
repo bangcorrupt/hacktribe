@@ -94,7 +94,8 @@ def main():
         cat_no = wavebuf[RIFF_len - 0x482] + wavebuf[RIFF_len - 0x481] * 256
         print(sample_no+1,"  ",sample_name," (",get_category(cat_no),") len: ",len(wavebuf))
         # Create file name removing all non-alphanumeric chars via Regex
-        wavefile = re.sub(r'[^\w\s-]','','{0:03d}-{1:s}'.format(sample_no,sample_name))
+        # Add 1 to sample no for humans.
+        wavefile = re.sub(r'[^\w\s-]','','{0:03d}-{1:s}'.format(sample_no+1,sample_name))
         with open(str(wavefile) + '.wav', 'wb') as f:
             f.write(wavebuf)
             
