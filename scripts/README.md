@@ -2,22 +2,14 @@
 
 Scripts for dealing with electribe2 files.
 
-e2all2pat.py  - Converts allpat file to a directory of e2pat files.  
+- **e2-firmware-patch.py** - Take e2 Sampler firmware v2.02 file and patch it to HackTribe firmware
+- **e2_recode_sample_pat.py** - Takes your existing e2sSample.all sample and .e2sallpat pattern files and rewrites them for use with the HackTribe
+- **e2_sample_all_to_wav.py** - Breaks up a e2sSample.all sample dump into individual .WAV files for importing
+- **e2all2pat.py** - Breaks up an .e2ssallpat pattern dump into individual .pat files for importing
+- **e2pat2all.py** - Fuses individual .pat files into an .e2sallpat file
+- **e2pat2syx.py** - .pat Pattern file to MIDI Sysex conversion
+- **e2syx2pat.py** - MIDI Sysex to .pat Pattern file conversion
+- **e2pat_shift.py** - Changes the oscillator numbers in an .e2sallpat file to sample numbers in user space (obsolete, use e2_recode_sample_pat.py now)
+- **e2s_sample_lister.py** - Lists all samples in an .all sample dump file
 
-e2pat2syx.py - Converts a pattern file in e2pat format to a pattern file in sysex format.
-
-e2syx2pat.py - Converts a pattern file in sysex format to pattern file in e2pat format.
-
-e2seqrot.py - Rotates sequence of specified part by specified number of steps.  Takes e2pat as input.
-
-e2pat2all.py - Create allpatterns from a single pattern.
-
-e2ev.py - Split event recording by pattern, create stems, mute parts, extract and replace patterns.
-
-e2sysex.py - <-- Moved to [hacktribe-editor](https://github.com/bangcorrupt/hacktribe-editor)
-
-e2-header.py - Edit file header to load sampler firmware on synth hardware
-
-e2-init-pat.py - Insert custom init pattern in electribe 2 sampler firmware version 2.02
-
-e2_syx_codec.py - <-- Moved to [hacktribe-editor](https://github.com/bangcorrupt/hacktribe-editor)
+There are additional scripts for inserting custom groove templates and init patterns, as well as for manipulating/splitting event files, in [bangcorrupt's original repository](https://github.com/bangcorrupt/hacktribe/tree/main/scripts).  
