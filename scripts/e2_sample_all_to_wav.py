@@ -3,7 +3,7 @@
 """
 Read e2sSample.all library and split it into single .WAV files with e2 metadata
 
-
+For file format, see https://github.com/untergeekDE/electribe2-docs/blob/main/e2sSample-all-file-format.md
 Created on Fri Dec 30 00:31:16 2022
 
 @author: jan
@@ -13,7 +13,7 @@ import argparse
 import os
 import re
 
-#os.chdir("..")
+# os.chdir("..")
 
 # Using bangcorrupt's e2all2pat.py script as a base.
 
