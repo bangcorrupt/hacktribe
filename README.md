@@ -4,7 +4,7 @@ Electribe 2 hacks, based on sampler firmware version 2.02. Work by [bangcorrupt]
 ## Features
 - Sampling
 - Filter types from the E2 Synth version: Electribe, Moog, MS20, Oberheim, Prophet-5, Acid
-- Oscillator models: Dual and Oct Saw/Square/Tri/Sine ("Supersaws"!), 2-OP FM, VPM 
+- Oscillator models: Dual and Oct Saw/Square/Tri/Sine, 2-OP FM, VPM 
 - More IFX, grooves, scales
 - Import/Export IFX, grooves
 - Expanded MIDI implementation
