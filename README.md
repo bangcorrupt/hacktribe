@@ -33,7 +33,7 @@ If you want to support this project financially, you are most welcome to [become
 
 My sincerest gratitude to all who have chosen to do so:
 
-[maks](https://github.com/maks), [AndrewSosna](https://github.com/AndrewSosna), [woeps](https://github.com/woeps), [tiberiuichim](https://github.com/tiberiuichim), [f-galland](https://github.com/f-galland), [tokejuhoklee](https://github.com/tokejuhoklee), [juanjo1138](https://github.com/juanjo1138), [chaocrator](https://github.com/chaocrator), [djokenzi](https://github.com/djokenzi), [Piergap](https://github.com/Piergap), [Forumlivii](https://github.com/Forumlivii), [ptowns](https://github.com/ptowns), [BKLronin](https://github.com/BKLronin), [richardarnezjames](https://github.com/richardarnezjames), [asyncron-os](https://github.com/asyncron-os), [weicj](https://github.com/weicj),
+[maks](https://github.com/maks), [AndrewSosna](https://github.com/AndrewSosna), [woeps](https://github.com/woeps), [tiberiuichim](https://github.com/tiberiuichim), [f-galland](https://github.com/f-galland), [tokejuhoklee](https://github.com/tokejuhoklee), [juanjo1138](https://github.com/juanjo1138), [chaocrator](https://github.com/chaocrator), [djokenzi](https://github.com/djokenzi), [Piergap](https://github.com/Piergap), [Forumlivii](https://github.com/Forumlivii), [ptowns](https://github.com/ptowns), [BKLronin](https://github.com/BKLronin), [richardarnezjames](https://github.com/richardarnezjames), [asyncron-os](https://github.com/asyncron-os), [weicj](https://github.com/weicj)
 
 See [How to support hacktribe](https://github.com/bangcorrupt/hacktribe/discussions/63) for more details.
 
