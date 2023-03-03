@@ -1,6 +1,8 @@
 # Hacktribe
 Electribe 2 hacks, based on sampler firmware version 2.02.
 
+## [Dump Synth PCM Samples](https://github.com/bangcorrupt/hacktribe/wiki/Dump-Synth-PCM-Samples)
+
 ## Features
 - Sampling
 - Filters
