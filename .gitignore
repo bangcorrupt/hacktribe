@@ -11,4 +11,6 @@ hack
 *.o
 *.elf
 *.hxt
+*.bmp
+*.vim
 .*
