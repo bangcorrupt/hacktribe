@@ -7,7 +7,8 @@
 # I wanted to keep my existing patterns, this kept me from installing HACKTRIBE - 
 # but now that I've done it, I did not want to correct all existing patterns by hand
 
-import argparse
+
+ argparse
 
 # Using bangcorrupt's e2all2pat.py script as a base.
 # (I'd normally use snake_case instead of camelCase for variables. Never mind!)
