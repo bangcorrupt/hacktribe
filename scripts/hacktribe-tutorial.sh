@@ -30,13 +30,18 @@ cd hacktribe
 # 'wget' command can be used to download files if we know the URL:
 wget https://cdn.korg.com/us/support/download/files/0b87bcd3112fbb8c0ad7b0f55e618837.zip
 
-# Unzip the zip archive we just downloaded to access the files inside:
+#
+
 
  
 
 
-# Move the firmware update file 'SYSTEM.VSB' to our current directory '.' :
-mv electribe_sampler_system_v202/SYSTEM.VSB .
+# 
+
+
+ 
+ 
+ 
 
 # Now we have all the files in the right places.
 
