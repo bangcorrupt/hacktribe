@@ -46,7 +46,8 @@ wget https://cdn.korg.com/us/support/download/files/0b87bcd3112fbb8c0ad7b0f55e61
 # Now we have all the files in the right places.
 
 # Next, make sure the required python packages are installed:
-pip install argparse bsdiff4
+
+ install argparse bsdiff4
 
 # Now we are ready to run the firmware patching script.
 # This will apply the hacktribe patch to the factory firmware,
