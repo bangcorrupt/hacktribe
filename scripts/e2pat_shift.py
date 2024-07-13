@@ -14,16 +14,18 @@
 # (I'd normally use snake_case instead of camelCase for variables. Never mind!)
 
 def main():        
-    explanation = """This script adapts all the osc numbers in your existing patterns\n
-            if you had to move the samples to make room for the new Hacktribe waveforms.\n 
-            The factory waveforms 1..18 are left untouched."""
+ 
+ 
+   
+   
     parser = argparse.ArgumentParser(epilog=explanation)    
     parser.add_argument("-i", "--input", dest='inFile', help="path/to/input/file.e2sallpat")
     parser.add_argument("-o", "--output", dest='outFile', help="path/to/output/shiftedxxx.e2sallpat")
     parser.add_argument("-s", "--shift", dest='shiftBy', help="Shift osc by -999...999")
     args = parser.parse_args()
     
-    inFile = 'electribe_allpattern.e2sallpat'
+    
+    nFile = 'electribe_allpattern.e2sallpat'
     shiftBy = "500"
 
     
