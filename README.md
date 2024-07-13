@@ -16,7 +16,14 @@ Electribe 2 hacks, based on sampler firmware version 2.02.
 See a list of [demo videos](https://github.com/bangcorrupt/hacktribe/wiki/Features#demo-videos) in the [wiki](https://github.com/bangcorrupt/hacktribe/wiki).
 
 ## How To
-See **[Firmware Patch](../../wiki/how-to#firmware-patch)**.
+See **[
+    
+
+
+**
+
+
+
 
 ## What If?
 See **[Debrick](../../wiki/debrick)**.
