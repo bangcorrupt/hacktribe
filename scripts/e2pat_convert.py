@@ -1,5 +1,5 @@
-import os
 import sys
+from pathlib import Path
 
 if len(sys.argv) < 3:
     print("Usage:")
@@ -7,12 +7,14 @@ if len(sys.argv) < 3:
     print("e2pat_convert.py FILE_PATH [synth|sampler]")
     exit(0)
 
-path = sys.argv[1]
+path = Path(sys.argv[1])
 device = sys.argv[2]
 
-if os.path.exists(path):
+if path.is_file():
 
-    filename, extension = os.path.splitext(path)
+    extension = path.suffix
+    basename = path.stem
+    output_dir = path.parent
 
     if extension == ".e2spat" or extension == ".e2pat":
         postfix = "pat"
@@ -45,13 +47,11 @@ if os.path.exists(path):
         )
         exit(0)
 
-    print("Modified header of", os.path.basename(path))
+    print("Modified header of", path)
 
-    output_dir = os.path.dirname(path)
+    output_filename = Path("converted-" + basename + prefix + postfix)
 
-    output_filename = "converted-" + filename + prefix + postfix
-
-    output_path = os.path.join(output_dir, output_filename)
+    output_path = output_dir / output_filename
 
     print("Saved to", output_path)
 
