@@ -166,7 +166,7 @@ def main():
 
     print("Everything appears to be OK, writing firmware.")
 
-    output_path = "splash-" + input_path
+    output_path = input_path
     with open(output_path, "wb") as f:
         f.write(vsb)
 
