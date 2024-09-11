@@ -53,10 +53,10 @@ if path.is_file():
 
     output_path = output_dir / output_filename
 
-    print("Saved to", output_path)
-
     with open(output_path, "wb") as f:
         f.write(hak)
+
+    print("Saved to", output_path)
 
 else:
     print("File not found.")
