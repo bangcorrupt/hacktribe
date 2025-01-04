@@ -170,7 +170,7 @@ class E2Sysex:
     # get global settings
     # returns settings as sysex bytes
     def get_global(self):
-        msg = Message("sysex", data=self.sysex_head + [0x1E])
+        msg = Message("sysex", data=self.sysex_head + [0x0E])
         self.outport.send(msg)
 
         response = self.sysex_response()
@@ -179,7 +179,7 @@ class E2Sysex:
             logging.warning("DATA LOAD ERROR: Global data dump request unsuccessful")
             return -1
 
-        elif response[6] == 0x40:
+        elif response[6] == 0x51:
             logging.info(
                 "CURRENT PATTERN DATA DUMP: Global data dump request successful"
             )
@@ -191,7 +191,20 @@ class E2Sysex:
     # settings is global settings as sysex bytes
     # checks response and returns 0 if successful
     def set_global(self, settings):
-        logging.info("SET GLOBAL DATA: Not implemented yet")
+        logging.info("SET GLOBAL DATA")
+
+        msg = Message("sysex", data=self.sysex_head + [0x51] + settings)
+
+        self.outport.send(msg)
+        response = self.sysex_response()
+
+        if response[6] == 0x24:
+            logging.warning("DATA LOAD ERROR: Global settings dump unsuccessful")
+            return 0x24
+
+        elif response[6] == 0x23:
+            logging.info("PATTERN DATA DUMP: Global settings dump successful")
+            return 0x23
 
     def sysex_response(self):
         response = []
