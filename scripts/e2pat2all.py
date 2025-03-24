@@ -41,8 +41,7 @@ def main():
 
     for i in range(250):
         start = patOff+(i*patLen)
-        end = start + patLen
-        data[start:patLen] = apData[256:]
+        data[start:start+patLen] = apData[256:]
 
     with open(outFile, 'wb') as f:
         f.write(data)
