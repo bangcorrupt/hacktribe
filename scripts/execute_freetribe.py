@@ -30,12 +30,17 @@ if len(sys.argv) < 2:
     print("python execute_freetribe.py FILE_PATH [PORT_NAME]\n")
     exit(0)
 
-if len(sys.argv) < 3:
-    port_name = None
-else:
-    port_name = sys.argv[2]
-
 bin_path = Path(sys.argv[1])
+
+in_port = None
+out_port = None
+
+if len(sys.argv) > 2:
+    in_port = sys.argv[2]
+
+if len(sys.argv) > 3:
+    out_port = sys.argv[3]
+
 
 if not bin_path.is_file():
     logging.error("File not found: " + str(bin_path))
@@ -44,20 +49,9 @@ if not bin_path.is_file():
 
 logging.info("Load and execute Freetribe.")
 
-if port_name is None:
-    port_names = mido.get_output_names()
-    menu_items = dict(enumerate(port_names, start=1))
-
-    while port_name is None:
-        display_menu(menu_items)
-        selection = int(input("Please enter your selection number: "))
-        port_name = menu_items[selection]
-        logging.info("Port selected: " + port_name)
-
-
 logging.info("Initialising MIDI connection.")
 
-e = E2Sysex(port=port_name)
+e = E2Sysex(in_port, out_port)
 
 logging.info("Pivoting to Freetribe loader.")
 
@@ -86,7 +80,6 @@ code_chunks = list(chunks(code, 0x100))
 num_chunks = len(code_chunks)
 
 for i, chunk in enumerate(code_chunks):
-
     logging.info("Loading chunk: " + str(i) + " of " + str(num_chunks))
 
     chunk = chunk.ljust(256, b"\x00")[:256]

@@ -18,19 +18,37 @@ def main():
     e = E2Sysex()
 
 
+def display_menu(menu):
+    for k, v in menu.items():
+        print(k, v)
+
+
 class E2Sysex:
-    def __init__(self, port="electribe2 sampler electribe2 s", midi=None):
+    def __init__(self, in_port=None, out_port=None):
         logging.debug("Initialise SysEx")
 
-        if midi is not None:
-            self.midi = midi
-            self.inport = self.midi.inport
-            self.outport = self.midi.outport
-        else:
-            # ADD - try, catch
-            # port = 'electribe2:electribe2 electribe2 _ SOUND'
-            self.inport = mido.open_input(port)
-            self.outport = mido.open_output(port)
+        if in_port is None:
+            inputs = mido.get_input_names()
+            menu_items = dict(enumerate(inputs, start=1))
+
+            while in_port is None:
+                display_menu(menu_items)
+                selection = int(input("Please enter your selection number: "))
+                in_port = menu_items[selection]
+                logging.info("Input port selected: " + in_port)
+
+        if out_port is None:
+            outputs = mido.get_output_names()
+            menu_items = dict(enumerate(outputs, start=1))
+
+            while out_port is None:
+                display_menu(menu_items)
+                selection = int(input("Please enter your selection number: "))
+                out_port = menu_items[selection]
+                logging.info("Output port selected: " + out_port)
+
+        self.inport = mido.open_input(in_port)
+        self.outport = mido.open_output(out_port)
 
         self.global_channel, self.id, self.version = self.search_device()
 
@@ -44,7 +62,6 @@ class E2Sysex:
         self.sysex_head = [0x42, 0x30 + self.global_channel, 0x00, 0x01, self.id]
 
     def search_device(self):
-
         msg = Message("sysex", data=[0x42, 0x50, 0x00, 0x00])
 
         self.outport.send(msg)
@@ -112,7 +129,6 @@ class E2Sysex:
     # get current pattern edit buffer from device
     # returns current pattern as sysex bytes SysEx error code
     def get_current_pattern(self):
-
         msg = Message("sysex", data=self.sysex_head + [0x10])
         self.outport.send(msg)
 
@@ -136,7 +152,6 @@ class E2Sysex:
     # pattern is pattern file as sysex bytes
     # returns SysEx response code
     def set_current_pattern(self, pattern):
-
         msg = Message("sysex", data=self.sysex_head + [0x40] + pattern)
 
         self.outport.send(msg)
@@ -180,9 +195,7 @@ class E2Sysex:
             return -1
 
         elif response[6] == 0x51:
-            logging.info(
-                "CURRENT PATTERN DATA DUMP: Global data dump request successful"
-            )
+            logging.info("GLOBAL DATA DUMP: Global data dump request successful")
 
             data = response[7:-1]
             return bytes(data)
@@ -203,7 +216,7 @@ class E2Sysex:
             return 0x24
 
         elif response[6] == 0x23:
-            logging.info("PATTERN DATA DUMP: Global settings dump successful")
+            logging.info("GLOBAL DATA DUMP: Global settings dump successful")
             return 0x23
 
     def sysex_response(self):
@@ -222,7 +235,6 @@ class E2Sysex:
 
     # val is list of sysex bytes
     def test_sysex_message(self, val):
-
         msg = Message("sysex", data=self.sysex_head + val)
         logging.debug("Sending message: " + msg.hex())
         self.outport.send(msg)
@@ -350,7 +362,6 @@ class E2Sysex:
     # Uses get_cpu_ram for now
     # UPDATE - Add firmware hack for specific sysex function
     def get_ifx(self, ifx_idx):
-
         if ifx_idx > 99 or ifx_idx < 0:
             logging.warning("IFX index out of range - must be >= 0 & < 100.")
             return
@@ -394,7 +405,6 @@ class E2Sysex:
     # Add new IFX preset, increasing total count
     # ifx is byte list
     def add_ifx(self, ifx):
-
         # Get current max IFX index
         ifx_idx = self.read_cpu_ram(0xC003EFDC, 1)[0]
 
@@ -428,7 +438,6 @@ class E2Sysex:
     # Uses get_cpu_ram for now
     # UPDATE - Add firmware hack for specific sysex function
     def get_groove(self, gv_idx):
-
         if gv_idx > 127 or gv_idx < 0:
             logging.warning("Groove index out of range - must be >= 0 & < 128.")
             return
@@ -448,7 +457,6 @@ class E2Sysex:
     # Uses write_cpu_ram for now
     # UPDATE - Add firmware hack for specific sysex function
     def set_groove(self, gv_idx, gv):
-
         if gv_idx > 127 or gv_idx < 0:
             logging.warning("Groove index out of range - must be >= 0 & < 128.")
             return
@@ -466,7 +474,6 @@ class E2Sysex:
     # Add new groove template, increasing total count
     # gv is byte list
     def add_groove(self, gv):
-
         # Get current max groove index
         gv_idx = self.read_cpu_ram(0xC007BB88, 1)[0]
 
